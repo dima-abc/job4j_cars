@@ -7,26 +7,30 @@ import java.util.Objects;
  * 3. Мидл
  * 3.3. Hibernate
  * 3.3.2. Mapping
- * Модели и связи. Машины и владельцы [#4744]
- * Driver модель данных описывает владельца автомобиля.
+ * Реализовать площадку продаж машин. [#4747]
+ * Model модель данных описиывает модель автомобиля.
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 27.05.2022
  */
 @Entity
-@Table(name = "drivers")
-public class Driver {
+@Table(name = "models")
+public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "driver_id")
+    @Column(name = "model_id")
     private int id;
-    @Column(name = "driver_name", nullable = false)
+    @Column(name = "model_name", nullable = false)
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "mark_id", foreignKey = @ForeignKey(name = "MARK_ID_FK"), nullable = false)
+    private Mark mark;
 
-    public static Driver of(String name) {
-        Driver driver = new Driver();
-        driver.name = name;
-        return driver;
+    public static Model of(String name, Mark mark) {
+        Model model = new Model();
+        model.name = name;
+        model.mark = mark;
+        return model;
     }
 
     public int getId() {
@@ -45,6 +49,14 @@ public class Driver {
         this.name = name;
     }
 
+    public Mark getMark() {
+        return mark;
+    }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -53,8 +65,8 @@ public class Driver {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Driver driver = (Driver) o;
-        return id == driver.id;
+        Model model = (Model) o;
+        return id == model.id;
     }
 
     @Override
@@ -64,7 +76,7 @@ public class Driver {
 
     @Override
     public String toString() {
-        return "Driver{id=" + id
-                + ", name='" + name + '\'' + '}';
+        return "Model{id=" + id + ", name='" + name + '\''
+                + ", mark=" + mark + '}';
     }
 }

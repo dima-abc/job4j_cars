@@ -7,26 +7,26 @@ import java.util.Objects;
  * 3. Мидл
  * 3.3. Hibernate
  * 3.3.2. Mapping
- * Модели и связи. Машины и владельцы [#4744]
- * Driver модель данных описывает владельца автомобиля.
+ * Реализовать площадку продаж машин. [#4747]
+ * Body модель данных описывает кузов автомобиля.
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 27.05.2022
  */
 @Entity
-@Table(name = "drivers")
-public class Driver {
+@Table(name = "bodies")
+public class Body {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "driver_id")
+    @Column(name = "body_id")
     private int id;
-    @Column(name = "driver_name", nullable = false)
+    @Column(name = "body_name", nullable = false, unique = true)
     private String name;
 
-    public static Driver of(String name) {
-        Driver driver = new Driver();
-        driver.name = name;
-        return driver;
+    public static Body of(String name) {
+        Body body = new Body();
+        body.name = name;
+        return body;
     }
 
     public int getId() {
@@ -53,8 +53,8 @@ public class Driver {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Driver driver = (Driver) o;
-        return id == driver.id;
+        Body body = (Body) o;
+        return id == body.id;
     }
 
     @Override
@@ -64,7 +64,6 @@ public class Driver {
 
     @Override
     public String toString() {
-        return "Driver{id=" + id
-                + ", name='" + name + '\'' + '}';
+        return "Body{id=" + id + ", name='" + name + '\'' + '}';
     }
 }

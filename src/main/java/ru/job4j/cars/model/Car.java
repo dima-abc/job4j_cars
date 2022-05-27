@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -22,10 +23,18 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
     private int id;
-    @Column(name = "car_name", nullable = false)
-    private String name;
+    @Column(name = "car_description")
+    private String description;
+    @Column(name = "car_photo")
+    private Byte[] photo;
     @ManyToOne
-    @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))
+    @JoinColumn(name = "model_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"))
+    private Model model;
+    @ManyToOne
+    @JoinColumn(name = "body_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"), nullable = false)
+    private Body body;
+    @ManyToOne
+    @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"), nullable = false)
     private Engine engine;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "history_owner", joinColumns = {
@@ -34,9 +43,12 @@ public class Car {
                     @JoinColumn(name = "car_id", nullable = false, updatable = false)})
     private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
 
-    public static Car of(String name, Engine engine) {
+    public static Car of(String description,
+                         Byte[] photo, Body body, Engine engine) {
         Car car = new Car();
-        car.name = name;
+        car.description = description;
+        car.photo = photo;
+        car.body = body;
         car.engine = engine;
         return car;
     }
@@ -49,12 +61,36 @@ public class Car {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Byte[] photo) {
+        this.photo = photo;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
     }
 
     public Engine getEngine() {
@@ -82,19 +118,18 @@ public class Car {
             return false;
         }
         Car car = (Car) o;
-        return id == car.id && Objects.equals(name, car.name) && Objects.equals(engine, car.engine);
+        return id == car.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, engine);
+        return Objects.hash(id);
     }
 
     @Override
     public String toString() {
-        return "Car{id=" + id
-                + ", name='" + name + '\''
-                + ", engine=" + engine
-                + ", drivers=" + drivers + '}';
+        return "Car{id=" + id + ", description='" + description + '\''
+                + ", photo=" + Arrays.toString(photo) + ", model=" + model
+                + ", body=" + body + ", engine=" + engine + ", drivers=" + drivers + '}';
     }
 }

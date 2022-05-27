@@ -7,8 +7,13 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <include file="scripts/marks.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/models.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/bodies.sql" relativeToChangelogFile="true"/>
     <include file="scripts/engines.sql" relativeToChangelogFile="true"/>
     <include file="scripts/drivers.sql" relativeToChangelogFile="true"/>
     <include file="scripts/cars.sql" relativeToChangelogFile="true"/>
     <include file="scripts/history_owner.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/users.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/abs.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
