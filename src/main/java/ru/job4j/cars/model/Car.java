@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
@@ -18,7 +19,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Entity
 @Table(name = "cars")
-public class Car {
+public class Car implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
@@ -27,13 +28,13 @@ public class Car {
     private String description;
     @Column(name = "car_photo")
     private Byte[] photo;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"))
     private Model model;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "body_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"), nullable = false)
     private Body body;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"), nullable = false)
     private Engine engine;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -44,10 +45,11 @@ public class Car {
     private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
 
     public static Car of(String description,
-                         Byte[] photo, Body body, Engine engine) {
+                         Byte[] photo, Model model, Body body, Engine engine) {
         Car car = new Car();
         car.description = description;
         car.photo = photo;
+        car.model = model;
         car.body = body;
         car.engine = engine;
         return car;

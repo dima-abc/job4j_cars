@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "bodies")
-public class Body {
+public class Body implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "body_id")

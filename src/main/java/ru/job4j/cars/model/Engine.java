@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "engines")
-public class Engine {
+public class Engine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "engine_id")
@@ -24,7 +25,7 @@ public class Engine {
     @Column(name = "engine_name", nullable = false)
     private String name;
 
-    public Engine of(String name) {
+    public static Engine of(String name) {
         Engine engine = new Engine();
         engine.name = name;
         return engine;

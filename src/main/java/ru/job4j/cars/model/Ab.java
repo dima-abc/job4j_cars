@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "abs")
-public class Ab {
+public class Ab implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ab_id")
@@ -27,14 +28,14 @@ public class Ab {
     private LocalDateTime created = LocalDateTime.now().withNano(0);
     @Column(name = "ab_done")
     private LocalDateTime done;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", foreignKey = @ForeignKey(name = "CAR_ID_FK"))
     private Car car;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "USER_ID_FK"))
     private User user;
 
-    private static Ab of(String name, Car car, User user) {
+    public static Ab of(String name, Car car, User user) {
         Ab ab = new Ab();
         ab.name = name;
         ab.car = car;

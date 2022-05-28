@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -15,14 +16,14 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "models")
-public class Model {
+public class Model implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "model_id")
     private int id;
     @Column(name = "model_name", nullable = false)
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mark_id", foreignKey = @ForeignKey(name = "MARK_ID_FK"), nullable = false)
     private Mark mark;
 
