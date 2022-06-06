@@ -9,9 +9,9 @@ import java.util.Objects;
  * 3.3. Hibernate
  * 3.3.2. Mapping
  * Модели и связи. Машины и владельцы [#4744]
- * Engine модел данных описывает характеристики двиготеля.
- * Один из компонентов характеристики модели Car.
- *
+ * Engine модель данных описывает характеристики двигателя.
+ * Один из компонентов характеристики модели Model.
+ * Bidirectional Engine -> fuel
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 27.05.2022
  */
@@ -22,12 +22,16 @@ public class Engine implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "engine_id")
     private int id;
-    @Column(name = "engine_name", nullable = false)
+    @Column(name = "engine", nullable = false)
     private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fuel_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"))
+    private Fuel fuel;
 
-    public static Engine of(String name) {
+    public static Engine of(String name, Fuel fuel) {
         Engine engine = new Engine();
         engine.name = name;
+        engine.fuel = fuel;
         return engine;
     }
 
@@ -45,6 +49,14 @@ public class Engine implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Fuel getFuel() {
+        return fuel;
+    }
+
+    public void setFuel(Fuel fuel) {
+        this.fuel = fuel;
     }
 
     @Override
@@ -66,7 +78,7 @@ public class Engine implements Serializable {
 
     @Override
     public String toString() {
-        return "Engine{id=" + id
-                + ", name='" + name + '\'' + '}';
+        return "Engine{id=" + id + ", engine='" + name + '\'' +
+                ", fuel=" + fuel + '}';
     }
 }

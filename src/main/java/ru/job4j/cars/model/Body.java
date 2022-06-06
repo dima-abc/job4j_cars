@@ -21,7 +21,7 @@ public class Body implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "body_id")
     private int id;
-    @Column(name = "body_name", nullable = false, unique = true)
+    @Column(name = "body", nullable = false, unique = true)
     private String name;
 
     public static Body of(String name) {

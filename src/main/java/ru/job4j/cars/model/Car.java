@@ -24,19 +24,13 @@ public class Car implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
     private int id;
-    @Column(name = "car_description")
+    @Column(name = "description")
     private String description;
-    @Column(name = "car_photo")
+    @Column(name = "photo")
     private Byte[] photo;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"))
     private Model model;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "body_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"), nullable = false)
-    private Body body;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"), nullable = false)
-    private Engine engine;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "history_owner", joinColumns = {
             @JoinColumn(name = "driver_id", nullable = false, updatable = false)},
@@ -44,14 +38,11 @@ public class Car implements Serializable {
                     @JoinColumn(name = "car_id", nullable = false, updatable = false)})
     private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
 
-    public static Car of(String description,
-                         Byte[] photo, Model model, Body body, Engine engine) {
+    public static Car of(String description, Byte[] photo, Model model) {
         Car car = new Car();
         car.description = description;
         car.photo = photo;
         car.model = model;
-        car.body = body;
-        car.engine = engine;
         return car;
     }
 
@@ -87,22 +78,6 @@ public class Car implements Serializable {
         this.model = model;
     }
 
-    public Body getBody() {
-        return body;
-    }
-
-    public void setBody(Body body) {
-        this.body = body;
-    }
-
-    public Engine getEngine() {
-        return engine;
-    }
-
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-    }
-
     public Set<Driver> getDrivers() {
         return drivers;
     }
@@ -132,6 +107,6 @@ public class Car implements Serializable {
     public String toString() {
         return "Car{id=" + id + ", description='" + description + '\''
                 + ", photo=" + Arrays.toString(photo) + ", model=" + model
-                + ", body=" + body + ", engine=" + engine + ", drivers=" + drivers + '}';
+                + ", drivers=" + drivers + '}';
     }
 }
