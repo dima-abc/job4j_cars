@@ -1,8 +1,7 @@
-package ru.job4j.cars.model;
+package ru.job4j.cars.model.cmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * 3. Мидл
@@ -24,13 +23,13 @@ public class Model implements Serializable {
     @Column(name = "model", nullable = false)
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "CATEGORY_ID_FK"), nullable = false)
+    @JoinColumn(name = "cat_id", foreignKey = @ForeignKey(name = "CATEGORY_ID_FK"), nullable = false)
     private Category category;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mark_id", foreignKey = @ForeignKey(name = "MARK_ID_FK"), nullable = false)
     private Mark mark;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "year", foreignKey = @ForeignKey(name = "YEAR_FK"), nullable = false)
+    @JoinColumn(name = "year_id", foreignKey = @ForeignKey(name = "YEAR_ID_FK"), nullable = false)
     private Year year;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "body_id", foreignKey = @ForeignKey(name = "BODY_ID_FK"), nullable = false)
@@ -39,18 +38,14 @@ public class Model implements Serializable {
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"), nullable = false)
     private Engine engine;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transmission_id", foreignKey = @ForeignKey(name = "TRANSMISSION_ID_FK"), nullable = false)
+    @JoinColumn(name = "trans_id", foreignKey = @ForeignKey(name = "TRANS_ID_FK"), nullable = false)
     private Transmission transmission;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drive_unit_id", foreignKey = @ForeignKey(name = "DRIVE_UNIT_ID_FK"), nullable = false)
-    private DriveUnit driveUnit;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "color_id", foreignKey = @ForeignKey(name = "COLOR_ID_KEY"), nullable = false)
     private Color color;
 
     public static Model of(String name, Category category, Mark mark, Year year,
-                           Body body, Engine engine, Transmission transmission,
-                           DriveUnit driveUnit, Color color) {
+                           Body body, Engine engine, Transmission transmission, Color color) {
         Model model = new Model();
         model.name = name;
         model.category = category;
@@ -58,7 +53,7 @@ public class Model implements Serializable {
         model.year = year;
         model.body = body;
         model.engine = engine;
-        model.driveUnit = driveUnit;
+        model.transmission = transmission;
         model.color = color;
         return model;
     }
@@ -127,19 +122,35 @@ public class Model implements Serializable {
         this.transmission = transmission;
     }
 
-    public DriveUnit getDriveUnit() {
-        return driveUnit;
-    }
-
-    public void setDriveUnit(DriveUnit driveUnit) {
-        this.driveUnit = driveUnit;
-    }
-
     public Color getColor() {
         return color;
     }
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Model model = (Model) o;
+        return id == model.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Model{id=" + id + ", name='" + name + '\'' + ", category=" + category + ", mark=" + mark
+                + ", year=" + year + ", body=" + body + ", engine=" + engine + ", transmission=" + transmission
+                + ", color=" + color + '}';
     }
 }

@@ -1,9 +1,7 @@
-package ru.job4j.cars.model;
+package ru.job4j.cars.model.cmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,12 +20,10 @@ import java.util.Objects;
 public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "cat_id")
     private int id;
     @Column(name = "category", unique = true, nullable = false)
     private String name;
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private List<Model> models = new ArrayList<>();
 
     public static Category of(String name) {
         Category category = new Category();
@@ -51,18 +47,6 @@ public class Category implements Serializable {
         this.name = category;
     }
 
-    public List<Model> getModels() {
-        return models;
-    }
-
-    public void setModels(List<Model> models) {
-        this.models = models;
-    }
-
-    public void addModel(Model model) {
-        this.models.add(model);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -83,6 +67,6 @@ public class Category implements Serializable {
     @Override
     public String toString() {
         return "Category{id=" + id + ", category='" + name + '\''
-                + ", models=" + models + '}';
+                + ", models=" + '}';
     }
 }

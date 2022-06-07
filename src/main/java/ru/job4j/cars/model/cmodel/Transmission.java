@@ -1,9 +1,7 @@
-package ru.job4j.cars.model;
+package ru.job4j.cars.model.cmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,8 +23,6 @@ public class Transmission implements Serializable {
     private int id;
     @Column(name = "transmission", unique = true, nullable = false)
     private String name;
-    @OneToMany(mappedBy = "transmission", fetch = FetchType.LAZY)
-    private List<Model> models = new ArrayList<>();
 
     public static Transmission of(String name) {
         Transmission transmission = new Transmission();
@@ -50,18 +46,6 @@ public class Transmission implements Serializable {
         this.name = name;
     }
 
-    public List<Model> getModels() {
-        return models;
-    }
-
-    public void setModels(List<Model> transmissions) {
-        this.models = transmissions;
-    }
-
-    public void addModel(Model model) {
-        this.models.add(model);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,7 +65,6 @@ public class Transmission implements Serializable {
 
     @Override
     public String toString() {
-        return "Transmission{id=" + id + ", name='" + name + '\'' +
-                ", models=" + models + '}';
+        return "Transmission{id=" + id + ", name='" + name + '\'' + ", models=" + '}';
     }
 }

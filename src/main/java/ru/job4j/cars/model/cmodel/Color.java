@@ -1,9 +1,7 @@
-package ru.job4j.cars.model;
+package ru.job4j.cars.model.cmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 3. Мидл
@@ -24,12 +22,13 @@ public class Color implements Serializable {
     private int id;
     @Column(name = "color", unique = true, nullable = false)
     private String name;
-    @OneToMany(mappedBy = "color", fetch = FetchType.LAZY)
-    private List<Model> models = new ArrayList<>();
+    @Column(name = "code", unique = true, nullable = false)
+    private String code;
 
-    public static Color of(String name) {
+    public static Color of(String name, String code) {
         Color color = new Color();
         color.name = name;
+        color.code = code;
         return color;
     }
 
@@ -49,16 +48,12 @@ public class Color implements Serializable {
         this.name = name;
     }
 
-    public List<Model> getModels() {
-        return models;
+    public String getCode() {
+        return code;
     }
 
-    public void setModels(List<Model> models) {
-        this.models = models;
-    }
-
-    public void addModel(Model model) {
-        this.models.add(model);
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override
@@ -80,7 +75,7 @@ public class Color implements Serializable {
 
     @Override
     public String toString() {
-        return "Color{" + "id=" + id + ", name='" + name + '\'' +
-                ", models=" + models + '}';
+        return "Color{id=" + id + ", name='" + name + '\'' +
+                ", code='" + code + '\'' + '}';
     }
 }

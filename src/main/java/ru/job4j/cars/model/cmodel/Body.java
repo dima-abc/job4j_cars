@@ -1,4 +1,4 @@
-package ru.job4j.cars.model;
+package ru.job4j.cars.model.cmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,25 +9,25 @@ import java.util.Objects;
  * 3.3. Hibernate
  * 3.3.2. Mapping
  * Реализовать площадку продаж машин. [#4747]
- * Mark модель данных описывает марку автомобилей.
+ * Body модель данных описывает кузов автомобиля.
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 27.05.2022
  */
 @Entity
-@Table(name = "marks")
-public class Mark implements Serializable {
+@Table(name = "bodies")
+public class Body implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mark_id")
+    @Column(name = "body_id")
     private int id;
-    @Column(name = "mark_name", nullable = false, unique = true)
+    @Column(name = "body", nullable = false, unique = true)
     private String name;
 
-    public static Mark of(String name) {
-        Mark mark = new Mark();
-        mark.name = name;
-        return mark;
+    public static Body of(String name) {
+        Body body = new Body();
+        body.name = name;
+        return body;
     }
 
     public int getId() {
@@ -54,8 +54,8 @@ public class Mark implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Mark mark = (Mark) o;
-        return id == mark.id;
+        Body body = (Body) o;
+        return id == body.id;
     }
 
     @Override
@@ -65,6 +65,6 @@ public class Mark implements Serializable {
 
     @Override
     public String toString() {
-        return "Mark{id=" + id + ", name='" + name + '\'' + '}';
+        return "Body{id=" + id + ", name='" + name + '\'' + '}';
     }
 }

@@ -1,5 +1,7 @@
 package ru.job4j.cars.model;
 
+import ru.job4j.cars.model.cmodel.Model;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -24,13 +26,13 @@ public class Car implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
     private int id;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "photo")
-    private Byte[] photo;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"))
     private Model model;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "photo")
+    private byte[] photo;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "history_owner", joinColumns = {
             @JoinColumn(name = "driver_id", nullable = false, updatable = false)},
@@ -38,7 +40,7 @@ public class Car implements Serializable {
                     @JoinColumn(name = "car_id", nullable = false, updatable = false)})
     private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
 
-    public static Car of(String description, Byte[] photo, Model model) {
+    public static Car of(String description, byte[] photo, Model model) {
         Car car = new Car();
         car.description = description;
         car.photo = photo;
@@ -62,11 +64,11 @@ public class Car implements Serializable {
         this.description = description;
     }
 
-    public Byte[] getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Byte[] photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 

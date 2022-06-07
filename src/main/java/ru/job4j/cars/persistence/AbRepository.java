@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Ab;
-import ru.job4j.cars.model.Mark;
+import ru.job4j.cars.model.cmodel.Mark;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,7 +43,7 @@ public class AbRepository {
     }
 
     /**
-     * Показать обьявления за последний день.
+     * Показать объявления за последний день.
      *
      * @return List
      */
@@ -56,7 +56,7 @@ public class AbRepository {
     }
 
     /**
-     * Покозать обьявление только с фото.
+     * Показать объявление только с фото.
      *
      * @return List
      */
@@ -68,7 +68,7 @@ public class AbRepository {
     }
 
     /**
-     * Покозать обьявление определенной марки автомобиля.
+     * Показать объявление определенной марки автомобиля.
      *
      * @param mark Mark
      * @return List.
@@ -91,15 +91,13 @@ public class AbRepository {
     private <T> T tx(final Function<Session, T> command) {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();
-        try {
+        try (session) {
             T rsl = command.apply(session);
             tx.commit();
             return rsl;
         } catch (final Exception e) {
             tx.rollback();
             throw e;
-        } finally {
-            session.close();
         }
     }
 }

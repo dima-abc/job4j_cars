@@ -1,4 +1,4 @@
-package ru.job4j.cars.model;
+package ru.job4j.cars.model.cmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,11 +24,10 @@ public class Engine implements Serializable {
     private int id;
     @Column(name = "engine", nullable = false)
     private String name;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fuel_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"))
-    private Fuel fuel;
+    @Column(name = "fuel")
+    private String fuel;
 
-    public static Engine of(String name, Fuel fuel) {
+    public static Engine of(String name, String fuel) {
         Engine engine = new Engine();
         engine.name = name;
         engine.fuel = fuel;
@@ -51,11 +50,11 @@ public class Engine implements Serializable {
         this.name = name;
     }
 
-    public Fuel getFuel() {
+    public String getFuel() {
         return fuel;
     }
 
-    public void setFuel(Fuel fuel) {
+    public void setFuel(String fuel) {
         this.fuel = fuel;
     }
 

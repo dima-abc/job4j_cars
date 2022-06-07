@@ -1,4 +1,4 @@
-package ru.job4j.cars.model;
+package ru.job4j.cars.model.cmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,25 +9,27 @@ import java.util.Objects;
  * 3.3. Hibernate
  * 3.3.2. Mapping
  * Реализовать площадку продаж машин. [#4747]
- * Body модель данных описывает кузов автомобиля.
+ * Mark модель данных описывает марку автомобилей.
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 27.05.2022
  */
 @Entity
-@Table(name = "bodies")
-public class Body implements Serializable {
+@Table(name = "marks")
+public class Mark implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "body_id")
+    @Column(name = "mark_id")
     private int id;
-    @Column(name = "body", nullable = false, unique = true)
+    @Column(name = "mark", nullable = false, unique = true)
     private String name;
+    private byte[] logo;
 
-    public static Body of(String name) {
-        Body body = new Body();
-        body.name = name;
-        return body;
+    public static Mark of(String name, byte[] logo) {
+        Mark mark = new Mark();
+        mark.name = name;
+        mark.logo = logo;
+        return mark;
     }
 
     public int getId() {
@@ -46,6 +48,14 @@ public class Body implements Serializable {
         this.name = name;
     }
 
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -54,8 +64,8 @@ public class Body implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Body body = (Body) o;
-        return id == body.id;
+        Mark mark = (Mark) o;
+        return id == mark.id;
     }
 
     @Override
@@ -65,6 +75,6 @@ public class Body implements Serializable {
 
     @Override
     public String toString() {
-        return "Body{id=" + id + ", name='" + name + '\'' + '}';
+        return "Mark{id=" + id + ", name='" + name + '\'' + '}';
     }
 }
