@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * 3.3.3. HQL, Criteria
  * 2. Фильтры для площадок машин [#4745]
  * AbRepositoryTest Поврехностное тестирование.
+ *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 28.05.2022
  */
@@ -43,20 +44,22 @@ class AbRepositoryTest {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();
         try {
-            Driver driver = Driver.of("DriverCar");
-            Engine engine = Engine.of("2.0 TDI");
+            Driver driver = Driver.of("DriverCar", "mail@mail.ru");
+            Engine engine = Engine.of("2.0 TDI", "Дизель");
             Body body = Body.of("Sedan");
-            Mark mark = Mark.of("Lada");
+            Mark mark = Mark.of("Lada", null);
             session.save(driver);
             session.save(engine);
             session.persist(body);
             session.persist(mark);
             Model model = Model.of("NIVA", mark);
             session.persist(model);
-            Car car = Car.of("description", new Byte[]{1}, model, body, engine);
+            Car car = Car.of(111, Category.of("Легковой"), Model.of("Niva", mark),
+                    Year.of(2020), body, engine, Transmission.of("Автомат"),
+                    Color.of("Красный", "RED"), "", new byte[]{111});
             car.addDriver(driver);
             session.persist(car);
-            User user = User.of("mail@mail.ru", "123");
+            User user = User.of("Dima", "mail@mail.ru", "123");
             session.persist(user);
             Ab ab = Ab.of("Sale Lada", car, user);
             session.persist(ab);
@@ -87,7 +90,7 @@ class AbRepositoryTest {
     @Test
     void getWithMark() {
         AbRepository abRepository = new AbRepository(sf);
-        Mark mark = Mark.of("");
+        Mark mark = Mark.of("", null);
         mark.setId(1);
         List<Ab> result = abRepository.getWithMark(mark);
         assertEquals(expected, result);

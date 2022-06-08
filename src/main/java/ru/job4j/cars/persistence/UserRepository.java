@@ -1,6 +1,7 @@
 package ru.job4j.cars.persistence;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 /**
  * 3. Мидл
@@ -11,6 +12,7 @@ import org.hibernate.SessionFactory;
  * @author Dmitry Stepanov, user Dmitry
  * @since 07.06.2022
  */
+@Repository
 public class UserRepository {
     private final SessionFactory sf;
 

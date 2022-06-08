@@ -1,8 +1,9 @@
-package ru.job4j.cars.persistence.catalog;
+package ru.job4j.cars.persistence;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import ru.job4j.cars.model.cmodel.Mark;
 
 import java.util.List;
 import java.util.function.Function;
@@ -12,12 +13,15 @@ import java.util.function.Function;
  * 3.3. Hibernate
  * 3.3.5. Контрольные вопросы
  * 2. Тестовое задание. Hibernate. [#330581]
- * ICatalog интерфейс описывает управление справочниками.
  *
  * @author Dmitry Stepanov, user Dmitry
- * @since 07.06.2022
+ * @since 08.06.2022
  */
-public interface ICatalog<T> {
+public interface IAbRepository<T> {
+    boolean created(T type);
+
+    boolean update(int id, T type);
+
     /**
      * Данный метод должен возвращать модель T о его идентификатору.
      *
@@ -32,6 +36,28 @@ public interface ICatalog<T> {
      * @return List
      */
     List<T> findAll();
+
+    /**
+     * Показать объявления за последний день.
+     *
+     * @return List
+     */
+    List<T> getLastDay();
+
+    /**
+     * Показать объявление только с фото.
+     *
+     * @return List
+     */
+    List<T> getWithPhoto();
+
+    /**
+     * Показать объявление определенной марки автомобиля.
+     *
+     * @param mark Mark
+     * @return List.
+     */
+    List<T> getWithMark(Mark mark);
 
     /**
      * Шаблон проектирования WRAPPER.

@@ -21,13 +21,16 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int id;
+    @Column(name = "user_name")
+    private String name;
     @Column(name = "user_email", nullable = false, unique = true)
     private String email;
     @Column(name = "user_password", nullable = false)
     private String password;
 
-    public static User of(String email, String password) {
+    public static User of(String name, String email, String password) {
         User user = new User();
+        user.name = name;
         user.email = email;
         user.password = password;
         return user;
@@ -57,6 +60,14 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,6 +87,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{id=" + id + ", email='" + email + '\'' + '}';
+        return "User{id=" + id + ", name='" + name + '\'' + ", email='" + email + '\'' +
+                ", password='" + password + '\'' + '}';
     }
 }

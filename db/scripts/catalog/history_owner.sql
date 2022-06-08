@@ -4,5 +4,5 @@
 create table if not exists history_owner(
     ho_id serial primary key,
     driver_id int not null references drivers(driver_id),
-    car_id int not null references cars(car_id)
+    vin int not null references cars(vin)
 );

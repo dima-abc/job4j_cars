@@ -35,7 +35,7 @@ public class TransmissionRepository implements ICatalog<Transmission> {
      */
     @Override
     public Transmission findById(int id) {
-        return tx(session -> session.get(Transmission.class, id));
+        return tx(session -> session.get(Transmission.class, id), sf);
     }
 
     /**
@@ -45,26 +45,6 @@ public class TransmissionRepository implements ICatalog<Transmission> {
      */
     @Override
     public List<Transmission> findAll() {
-        return tx(session -> session.createQuery("from Transmission").list());
-    }
-
-    /**
-     * Шаблон проектирования WRAPPER.
-     *
-     * @param command Function
-     * @param <T>     T
-     * @return T
-     */
-    private <T> T tx(final Function<Session, T> command) {
-        final Session session = sf.openSession();
-        final Transaction tx = session.beginTransaction();
-        try (session) {
-            T rsl = command.apply(session);
-            tx.commit();
-            return rsl;
-        } catch (final Exception e) {
-            tx.rollback();
-            throw e;
-        }
+        return tx(session -> session.createQuery("from Transmission").list(), sf);
     }
 }

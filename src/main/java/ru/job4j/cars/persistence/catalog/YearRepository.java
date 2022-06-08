@@ -35,7 +35,7 @@ public class YearRepository implements ICatalog<Year> {
      */
     @Override
     public Year findById(int id) {
-        return tx(session -> session.get(Year.class, id));
+        return tx(session -> session.get(Year.class, id), sf);
     }
 
     /**
@@ -45,26 +45,6 @@ public class YearRepository implements ICatalog<Year> {
      */
     @Override
     public List<Year> findAll() {
-        return tx(session -> session.createQuery("from Year").list());
-    }
-
-    /**
-     * Шаблон проектирования WRAPPER.
-     *
-     * @param command Function
-     * @param <T>     T
-     * @return T
-     */
-    private <T> T tx(final Function<Session, T> command) {
-        final Session session = sf.openSession();
-        final Transaction tx = session.beginTransaction();
-        try (session) {
-            T rsl = command.apply(session);
-            tx.commit();
-            return rsl;
-        } catch (final Exception e) {
-            tx.rollback();
-            throw e;
-        }
+        return tx(session -> session.createQuery("from Year").list(), sf);
     }
 }

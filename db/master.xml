@@ -13,7 +13,7 @@
     <include file="scripts/engines.sql" relativeToChangelogFile="true"/>
     <include file="scripts/drivers.sql" relativeToChangelogFile="true"/>
     <include file="scripts/cars.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/history_owner.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/history_owner.sql" relativeToChangelogFile="true"/>
     <include file="scripts/users.sql" relativeToChangelogFile="true"/>
     <include file="scripts/abs.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -1,6 +1,6 @@
 package ru.job4j.cars.model;
 
-import ru.job4j.cars.model.cmodel.Model;
+import ru.job4j.cars.model.cmodel.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,9 +26,29 @@ public class Car implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
     private int id;
+    @Column(name = "vin", nullable = false, unique = true)
+    private int vin;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cat_id", foreignKey = @ForeignKey(name = "CATEGORY_ID_FK"), nullable = false)
+    private Category category;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id", foreignKey = @ForeignKey(name = "MODEL_ID_FK"))
     private Model model;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "year_id", foreignKey = @ForeignKey(name = "YEAR_ID_FK"), nullable = false)
+    private Year year;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "body_id", foreignKey = @ForeignKey(name = "BODY_ID_FK"), nullable = false)
+    private Body body;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"), nullable = false)
+    private Engine engine;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trans_id", foreignKey = @ForeignKey(name = "TRANS_ID_FK"), nullable = false)
+    private Transmission transmission;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "color_id", foreignKey = @ForeignKey(name = "COLOR_ID_KEY"), nullable = false)
+    private Color color;
     @Column(name = "description")
     private String description;
     @Column(name = "photo")
@@ -37,14 +57,23 @@ public class Car implements Serializable {
     @JoinTable(name = "history_owner", joinColumns = {
             @JoinColumn(name = "driver_id", nullable = false, updatable = false)},
             inverseJoinColumns = {
-                    @JoinColumn(name = "car_id", nullable = false, updatable = false)})
+                    @JoinColumn(name = "vin", nullable = false, updatable = false)})
     private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
 
-    public static Car of(String description, byte[] photo, Model model) {
+    public static Car of(int vin, Category category, Model model, Year year, Body body,
+                  Engine engine, Transmission transmission, Color color,
+                  String description, byte[] photo) {
         Car car = new Car();
+        car.vin = vin;
+        car.category = category;
+        car.model = model;
+        car.year = year;
+        car.body = body;
+        car.engine = engine;
+        car.transmission = transmission;
+        car.color = color;
         car.description = description;
         car.photo = photo;
-        car.model = model;
         return car;
     }
 
@@ -54,6 +83,70 @@ public class Car implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getVin() {
+        return vin;
+    }
+
+    public void setVin(int vin) {
+        this.vin = vin;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    public Transmission getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(Transmission transmission) {
+        this.transmission = transmission;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public String getDescription() {
@@ -70,14 +163,6 @@ public class Car implements Serializable {
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
-    }
-
-    public Model getModel() {
-        return model;
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
     }
 
     public Set<Driver> getDrivers() {
@@ -107,8 +192,9 @@ public class Car implements Serializable {
 
     @Override
     public String toString() {
-        return "Car{id=" + id + ", description='" + description + '\''
-                + ", photo=" + Arrays.toString(photo) + ", model=" + model
-                + ", drivers=" + drivers + '}';
+        return "Car{id=" + id + "vin=" + vin +", category=" + category + ", model=" + model + ", year=" + year
+                + ", body=" + body + ", engine=" + engine + ", transmission=" + transmission
+                + ", color=" + color + ", description='" + description + '\'' + ", photo="
+                + Arrays.toString(photo) + ", drivers=" + drivers + '}';
     }
 }

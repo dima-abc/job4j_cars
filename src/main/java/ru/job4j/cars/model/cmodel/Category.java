@@ -9,7 +9,7 @@ import java.util.Objects;
  * 3.3. Hibernate
  * 3.3.5. Контрольные вопросы
  * 2. Тестовое задание. Hibernate. [#330581]
- * Category. Описывает модель данных категории автомобилей.
+ * CategoryRepository. Описывает модель данных категории автомобилей.
  * Легковой, Грузовой, Мотоцикл.
  *
  * @author Dmitry Stepanov, user Dmitry
@@ -66,7 +66,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "Category{id=" + id + ", category='" + name + '\''
+        return "CategoryRepository{id=" + id + ", category='" + name + '\''
                 + ", models=" + '}';
     }
 }

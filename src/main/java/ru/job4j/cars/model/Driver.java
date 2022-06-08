@@ -21,12 +21,15 @@ public class Driver implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "driver_id")
     private int id;
-    @Column(name = "driver_name", nullable = false)
+    @Column(name = "driver", nullable = false)
     private String name;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
-    public static Driver of(String name) {
+    public static Driver of(String name, String email) {
         Driver driver = new Driver();
         driver.name = name;
+        driver.email = email;
         return driver;
     }
 
@@ -44,6 +47,14 @@ public class Driver implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -65,7 +76,6 @@ public class Driver implements Serializable {
 
     @Override
     public String toString() {
-        return "Driver{id=" + id
-                + ", name='" + name + '\'' + '}';
+        return "Driver{id=" + id + ", name='" + name + '\'' + ", email='" + email + '\'' + '}';
     }
 }

@@ -4,8 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+import ru.job4j.cars.model.cmodel.Body;
 import ru.job4j.cars.model.cmodel.Mark;
-import ru.job4j.cars.model.cmodel.Year;
 
 import java.util.List;
 import java.util.function.Function;
@@ -15,37 +15,37 @@ import java.util.function.Function;
  * 3.3. Hibernate
  * 3.3.5. Контрольные вопросы
  * 2. Тестовое задание. Hibernate. [#330581]
- * MarkRepository управление справочником марки автомобиля.
+ * BodyRepository управление справочником кузовов.
  *
  * @author Dmitry Stepanov, user Dmitry
- * @since 07.06.2022
+ * @since 08.06.2022
  */
 @Repository
-public class MarkRepository implements ICatalog<Mark> {
+public class BodyRepository implements ICatalog<Body> {
     private final SessionFactory sf;
 
-    public MarkRepository(SessionFactory sf) {
+    public BodyRepository(SessionFactory sf) {
         this.sf = sf;
     }
 
     /**
-     * Найти марку по id.
+     * Найти кузов по id.
      *
      * @param id int
-     * @return Mark
+     * @return Body
      */
     @Override
-    public Mark findById(int id) {
-        return tx(session -> session.get(Mark.class, id), sf);
+    public Body findById(int id) {
+        return tx(session -> session.get(Body.class, id), sf);
     }
 
     /**
-     * Весь справочник Mark.
+     * Весь справочник body.
      *
      * @return List
      */
     @Override
-    public List<Mark> findAll() {
-        return tx(session -> session.createQuery("from Mark").list(), sf);
+    public List<Body> findAll() {
+        return tx(session -> session.createQuery("from Body").list(), sf);
     }
 }
