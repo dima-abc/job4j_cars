@@ -60,7 +60,16 @@ public class AbRepository implements IAbRepository<Ab> {
 
     @Override
     public List<Ab> findAll() {
-        return tx(session -> session.createQuery(HQL_AB, Ab.class).list(), sf);
+        return tx(session -> session.createQuery("select a from Ab a "
+                + "join fetch a.car c "
+                + "join fetch c.category ca "
+                + "join fetch c.model mo "
+                + "join fetch mo.mark ma "
+                + "join fetch c.year ye "
+                + "join fetch c.body bo "
+                + "join fetch c.engine en "
+                + "join fetch c.transmission tr "
+                + "join fetch c.color co", Ab.class).list(), sf);
     }
 
     /**

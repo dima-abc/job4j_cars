@@ -29,23 +29,27 @@
         <div class="album py-5 bg-light">
             <div class="container">
                 <table class="table">
-                    <thead>
+                    <tbody th:each="ab:${abAll}">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Описание</th>
-                        <th scope="col">Создан</th>
+                        <td rowspan="6">href + img</td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="ab: ${abAll}">
-                        <td th:text="${ab.id}"/>
-                        <td>
-                            <img th:width="150" th:high="150" th:src="@{|/photoCar/${ab.car.id}|}">
-                        </td>
-                        <td th:text="${ab.created}"/>
-                        <td th:text="${ab.name}"/>
-                        <td th:text="${ab.car.description}"/>
+                    <tr>
+                        <td colspan="4" th:text="${ab.car.year.release}">Год выпуска</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" th:text="${ab.name}">Название объявления</td>
+                        <td th:text="${ab.car.model.mark.name} + ' ' + ${ab.car.model.name}">mark+model</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" th:text="${ab.car.price}">Цена</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" th:text="${ab.car.mileage}">Пробег</td>
+                        <td th:text="${ab.car.transmission.name}">Коробка</td>
+                        <td th:text="${ab.car.engine.fuel}">Топливо</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" th:text="${ab.created}">Опубликована</td>
                     </tr>
                     </tbody>
                 </table>

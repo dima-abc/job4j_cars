@@ -35,21 +35,8 @@ public class AbController {
 
     @GetMapping("/")
     public String index(Model model) {
-        System.out.println("**************************" + abService.findAllAb());
-        System.out.println("**************************" + carService.findByIdCar(1));
         model.addAttribute("abAll", abService.findAllAb());
         return "index";
-    }
-
-
-    @GetMapping("/photoCar/{carId}")
-    public ResponseEntity<Resource> download(@PathVariable("carId") Integer carId) {
-        Car car = carService.findByIdCar(carId);
-        return ResponseEntity.ok()
-                .headers(new HttpHeaders())
-                .contentLength(car.getPhoto().length)
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(new ByteArrayResource(car.getPhoto()));
     }
 
 

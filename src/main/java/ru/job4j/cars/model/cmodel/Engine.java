@@ -77,7 +77,7 @@ public class Engine implements Serializable {
 
     @Override
     public String toString() {
-        return "Engine{id=" + id + ", engine='" + name + '\'' +
-                ", fuel=" + fuel + '}';
+        return "Engine{id=" + id + ", engine='" + name + '\''
+                + ", fuel=" + fuel + '}';
     }
 }

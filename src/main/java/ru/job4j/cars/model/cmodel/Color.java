@@ -75,7 +75,7 @@ public class Color implements Serializable {
 
     @Override
     public String toString() {
-        return "Color{id=" + id + ", name='" + name + '\'' +
-                ", code='" + code + '\'' + '}';
+        return "Color{id=" + id + ", name='" + name + '\''
+                + ", code='" + code + '\'' + '}';
     }
 }

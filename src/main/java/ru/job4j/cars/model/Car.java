@@ -28,6 +28,15 @@ public class Car implements Serializable {
     private int id;
     @Column(name = "vin", nullable = false, unique = true)
     private int vin;
+    @Column(name = "car_price")
+    private double price;
+    @Column(name = "car_mileage")
+    private int mileage;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "photo")
+    private byte[] photo;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id", foreignKey = @ForeignKey(name = "CATEGORY_ID_FK"), nullable = false)
     private Category category;
@@ -49,10 +58,7 @@ public class Car implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "color_id", foreignKey = @ForeignKey(name = "COLOR_ID_KEY"), nullable = false)
     private Color color;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "photo")
-    private byte[] photo;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "history_owner", joinColumns = {
             @JoinColumn(name = "driver_id", nullable = false, updatable = false)},
@@ -60,11 +66,13 @@ public class Car implements Serializable {
                     @JoinColumn(name = "vin", nullable = false, updatable = false)})
     private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
 
-    public static Car of(int vin, Category category, Model model, Year year, Body body,
-                  Engine engine, Transmission transmission, Color color,
-                  String description, byte[] photo) {
+    public static Car of(int vin, double price, int mileage, Category category, Model model, Year year, Body body,
+                         Engine engine, Transmission transmission, Color color,
+                         String description, byte[] photo) {
         Car car = new Car();
         car.vin = vin;
+        car.price = price;
+        car.mileage = mileage;
         car.category = category;
         car.model = model;
         car.year = year;
@@ -91,6 +99,22 @@ public class Car implements Serializable {
 
     public void setVin(int vin) {
         this.vin = vin;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
     }
 
     public Category getCategory() {
@@ -192,9 +216,10 @@ public class Car implements Serializable {
 
     @Override
     public String toString() {
-        return "Car{id=" + id + "vin=" + vin +", category=" + category + ", model=" + model + ", year=" + year
-                + ", body=" + body + ", engine=" + engine + ", transmission=" + transmission
-                + ", color=" + color + ", description='" + description + '\'' + ", photo="
-                + Arrays.toString(photo) + ", drivers=" + drivers + '}';
+        return "Car{id=" + id + ", vin=" + vin + ", price=" + price + ", mileage=" + mileage
+                + ", description='" + description + '\'' + ", photo=" + Arrays.toString(photo)
+                + ", category=" + category + ", model=" + model + ", year=" + year + ", body=" + body
+                + ", engine=" + engine + ", transmission=" + transmission + ", color=" + color
+                + ", drivers=" + drivers + '}';
     }
 }
