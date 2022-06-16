@@ -1,4 +1,4 @@
-package ru.job4j.cars.persistence.catalog;
+package ru.job4j.cars.repository.catalog;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;

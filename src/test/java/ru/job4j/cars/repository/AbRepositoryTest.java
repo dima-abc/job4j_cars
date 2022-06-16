@@ -1,4 +1,4 @@
-package ru.job4j.cars.persistence;
+package ru.job4j.cars.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -54,7 +54,7 @@ class AbRepositoryTest {
             session.persist(mark);
             Model model = Model.of("NIVA", mark);
             session.persist(model);
-            Car car = Car.of(111, Category.of("Легковой"), Model.of("Niva", mark),
+            Car car = Car.of(111, 1000.00D, 152000, Category.of("Легковой"), Model.of("Niva", mark),
                     Year.of(2020), body, engine, Transmission.of("Автомат"),
                     Color.of("Красный", "RED"), "", new byte[]{111});
             car.addDriver(driver);

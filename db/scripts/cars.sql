@@ -2,7 +2,7 @@
 Связь Many to One к таблице engines. cars -1-> engines*/
 create table if not exists cars(
     car_id serial primary key,
-    vin int not null unique,
+    vin varchar(100) not null unique,
     car_price decimal,
     car_mileage int,
     cat_id int references categories(cat_id),

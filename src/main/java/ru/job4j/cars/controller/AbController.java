@@ -33,10 +33,22 @@ public class AbController {
         this.carService = carService;
     }
 
+    /**
+     * Отображение всех объявлений.
+     *
+     * @param model Model
+     * @return index.html
+     */
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("abAll", abService.findAllAb());
-        return "index";
+        return "ab/index";
+    }
+
+    @GetMapping("/addAb")
+    public String create(Model model) {
+
+        return "ab/addAb";
     }
 
 

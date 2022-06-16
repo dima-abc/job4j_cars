@@ -27,7 +27,7 @@ public class Car implements Serializable {
     @Column(name = "car_id")
     private int id;
     @Column(name = "vin", nullable = false, unique = true)
-    private int vin;
+    private String vin;
     @Column(name = "car_price")
     private double price;
     @Column(name = "car_mileage")
@@ -66,7 +66,7 @@ public class Car implements Serializable {
                     @JoinColumn(name = "vin", nullable = false, updatable = false)})
     private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
 
-    public static Car of(int vin, double price, int mileage, Category category, Model model, Year year, Body body,
+    public static Car of(String vin, double price, int mileage, Category category, Model model, Year year, Body body,
                          Engine engine, Transmission transmission, Color color,
                          String description, byte[] photo) {
         Car car = new Car();
@@ -93,11 +93,11 @@ public class Car implements Serializable {
         this.id = id;
     }
 
-    public int getVin() {
+    public String getVin() {
         return vin;
     }
 
-    public void setVin(int vin) {
+    public void setVin(String vin) {
         this.vin = vin;
     }
 

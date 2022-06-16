@@ -1,13 +1,10 @@
-package ru.job4j.cars.persistence.catalog;
+package ru.job4j.cars.repository.catalog;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.cmodel.Year;
 
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * 3. Мидл

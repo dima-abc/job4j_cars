@@ -1,8 +1,7 @@
-package ru.job4j.cars.persistence.catalog;
+package ru.job4j.cars.repository.catalog;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.cmodel.Body;
 import ru.job4j.cars.model.cmodel.Color;
 
 import java.util.List;

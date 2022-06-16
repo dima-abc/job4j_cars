@@ -2,8 +2,7 @@ package ru.job4j.cars.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.model.Ab;
-import ru.job4j.cars.persistence.AbRepository;
-import ru.job4j.cars.persistence.IAbRepository;
+import ru.job4j.cars.repository.AbRepository;
 
 import java.util.List;
 

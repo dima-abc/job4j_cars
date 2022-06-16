@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -23,33 +24,44 @@
 </head>
 <body>
 <div class="container py-3">
-
     <header th:insert="blocks/header :: header"></header>
     <main>
         <div class="album py-5 bg-light">
             <div class="container">
-                <table class="table">
-                    <tbody th:each="ab:${abAll}">
+                <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                    <div class="col">
+                        <div class="card mb-4 rounded-3 shadow-sm">
+                            <form th:action="@{/enterVin}" method="get">
+                                <button type="submit" value="createItem" class="w-100 btn btn-lg btn-outline-primary">Подать объявление
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped">
+                    <tbody th:each="ab : ${abAll}">
                     <tr>
-                        <td rowspan="6">href + img</td>
+                        <td rowspan="3">
+                            <img th:width="200" th:high="200" th:src="@{|/imgCar/${ab.car.id}|}" alt="car_img">
+                            href + img</td>
+                        <td
+                                th:text="${ab.car.model.mark.name} + ' ' + ${ab.car.model.name} + ', ' + ${ab.car.year.release}">
+                            Описание Марка+Модель+Год
+                        </td>
+                        <td th:text="'Цена: ' + ${ab.car.price} + ' ₽'">Цена</td>
                     </tr>
                     <tr>
-                        <td colspan="4" th:text="${ab.car.year.release}">Год выпуска</td>
+                        <td th:text="${ab.car.engine.name}
+                        + ', ' + ${ab.car.engine.fuel} + ', '
+                        + ${ab.car.transmission.name} + ', '
+                        + ${ab.car.mileage} + ' км.'">
+                            Двигатель+Топлива+КоробкаПередач+Пробег
+                        </td>
+                        <td th:text="'Опубликована: ' + ${ab.created}">Опубликована</td>
                     </tr>
                     <tr>
-                        <td colspan="3" th:text="${ab.name}">Название объявления</td>
-                        <td th:text="${ab.car.model.mark.name} + ' ' + ${ab.car.model.name}">mark+model</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" th:text="${ab.car.price}">Цена</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" th:text="${ab.car.mileage}">Пробег</td>
-                        <td th:text="${ab.car.transmission.name}">Коробка</td>
-                        <td th:text="${ab.car.engine.fuel}">Топливо</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" th:text="${ab.created}">Опубликована</td>
+                        <td></td>
+                        <td>Продано</td>
                     </tr>
                     </tbody>
                 </table>

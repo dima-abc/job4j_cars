@@ -1,4 +1,4 @@
-package ru.job4j.cars.persistence;
+package ru.job4j.cars.repository;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
