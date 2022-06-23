@@ -18,7 +18,7 @@ import ru.job4j.cars.service.CarService;
  * 3.3. Hibernate
  * 3.3.5. Контрольные вопросы
  * 2. Тестовое задание. Hibernate. [#330581]
- * AbController контроллер отображение видов обьявлений.
+ * AbController контроллер отображение видов объявлений.
  *
  * @author Dmitry Stepanov, user Dmitry
  * @since 08.06.2022
@@ -26,11 +26,9 @@ import ru.job4j.cars.service.CarService;
 @Controller
 public class AbController {
     private final AbService abService;
-    private final CarService carService;
 
-    public AbController(AbService abService, CarService carService) {
+    public AbController(AbService abService) {
         this.abService = abService;
-        this.carService = carService;
     }
 
     /**
@@ -47,7 +45,6 @@ public class AbController {
 
     @GetMapping("/addAb")
     public String create(Model model) {
-
         return "ab/addAb";
     }
 

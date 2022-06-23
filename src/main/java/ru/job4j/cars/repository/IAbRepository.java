@@ -3,7 +3,7 @@ package ru.job4j.cars.repository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import ru.job4j.cars.model.cmodel.Mark;
+import ru.job4j.cars.model.catologmodel.Mark;
 
 import java.util.List;
 import java.util.function.Function;

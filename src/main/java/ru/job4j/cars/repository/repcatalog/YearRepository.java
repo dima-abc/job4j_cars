@@ -1,8 +1,8 @@
-package ru.job4j.cars.repository.catalog;
+package ru.job4j.cars.repository.repcatalog;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.cmodel.Year;
+import ru.job4j.cars.model.catologmodel.Year;
 
 import java.util.List;
 

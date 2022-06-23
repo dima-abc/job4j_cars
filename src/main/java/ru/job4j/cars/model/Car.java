@@ -1,6 +1,6 @@
 package ru.job4j.cars.model;
 
-import ru.job4j.cars.model.cmodel.*;
+import ru.job4j.cars.model.catologmodel.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class Car implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
     private int id;
-    @Column(name = "vin", nullable = false, unique = true)
+    @Column(name = "vin", nullable = false)
     private String vin;
     @Column(name = "car_price")
     private double price;
@@ -36,7 +36,6 @@ public class Car implements Serializable {
     private String description;
     @Column(name = "photo")
     private byte[] photo;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id", foreignKey = @ForeignKey(name = "CATEGORY_ID_FK"), nullable = false)
     private Category category;

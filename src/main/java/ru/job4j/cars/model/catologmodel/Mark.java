@@ -1,4 +1,4 @@
-package ru.job4j.cars.model.cmodel;
+package ru.job4j.cars.model.catologmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,12 +23,10 @@ public class Mark implements Serializable {
     private int id;
     @Column(name = "mark", nullable = false, unique = true)
     private String name;
-    private byte[] logo;
 
     public static Mark of(String name, byte[] logo) {
         Mark mark = new Mark();
         mark.name = name;
-        mark.logo = logo;
         return mark;
     }
 
@@ -46,14 +44,6 @@ public class Mark implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public byte[] getLogo() {
-        return logo;
-    }
-
-    public void setLogo(byte[] logo) {
-        this.logo = logo;
     }
 
     @Override

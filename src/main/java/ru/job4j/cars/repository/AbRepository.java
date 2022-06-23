@@ -3,7 +3,7 @@ package ru.job4j.cars.repository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Ab;
-import ru.job4j.cars.model.cmodel.Mark;
+import ru.job4j.cars.model.catologmodel.Mark;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

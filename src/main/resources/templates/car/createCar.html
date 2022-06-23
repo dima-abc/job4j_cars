@@ -1,0 +1,137 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>CAR sales</title>
+</head>
+<body>
+<div class="container py-3">
+    <header th:insert="blocks/header :: header"></header>
+    <main>
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Выберете модель и введите параметры автомобиля
+            </div>
+            <div class="card-body">
+                <form class="row g-3" th:action="@{/selectModel}" method="get">
+                    <!--Выбор модели автомобиля-->
+                    <div class="col-md-6">
+                        <label for="modelId">Выберете модель</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="mark-auto" th:text="${mark.name}">Марка автомобиля</span>
+                            <select class="form-control" aria-describedby="mark-auto" id="modelId" name="modleId">
+                                <option th:each="model:${models}"
+                                        th:value="${model.id}"
+                                        th:text="${model.name}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--Выбор категории-->
+                    <div class="col-md-6">
+                        <label for="category.id">Категория</label>
+                        <select class="form-control" id="category.id" name="category.id">
+                            <option th:each="category:${categories}"
+                                    th:value="${category.id}"
+                                    th:text="${category.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <!--Выбор года выпуска-->
+                    <div class="col-md-4">
+                        <label for="year.id">Год выпуска</label>
+                        <select class="form-control" id="year.id" name="year.id">
+                            <option th:each="year:${years}"
+                                    th:value="${year.id}"
+                                    th:text="${year.release}">
+                            </option>
+                        </select>
+                    </div>
+                    <!--Выбор типа кузова-->
+                    <div class="col-md-4">
+                        <label for="body.id">Кузов</label>
+                        <select class="form-control" id="body.id" name="body.id">
+                            <option th:each="body:${bodies}"
+                                    th:value="${body.id}"
+                                    th:text="${body.name}">
+                            </option>
+                        </select>
+                    </div>
+                    <!--Тип двигателя-->
+                    <div class="col-md-4">
+                        <label for="engine.id">Двигатель</label>
+                        <select class="form-control" id="engine.id" name="engine.id">
+                            <option th:each="engine:${engines}"
+                                    th:value="${engine.id}"
+                                    th:text="${engine.name} + '(' + ${engine.fuel} + ')'">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="vin" class="form-label">Номер кузова</label>
+                        <input type="text" class="form-control" id="vin" name="vin">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="inputPassword4">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputAddress" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    </div>
+                    <div class="col-12">
+                        <label for="inputAddress2" class="form-label">Address 2</label>
+                        <input type="text" class="form-control" id="inputAddress2"
+                               placeholder="Apartment, studio, or floor">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputCity" class="form-label">City</label>
+                        <input type="text" class="form-control" id="inputCity">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inputState" class="form-label">State</label>
+                        <select id="inputState" class="form-select">
+                            <option selected>Choose...</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputZip" class="form-label">Zip</label>
+                        <input type="text" class="form-control" id="inputZip">
+                    </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                            <label class="form-check-label" for="gridCheck">
+                                Check me out
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-outline-secondary">Выбрать модель</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+</body>
+</html>

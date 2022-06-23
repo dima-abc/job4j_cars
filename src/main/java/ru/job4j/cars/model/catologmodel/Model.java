@@ -1,4 +1,4 @@
-package ru.job4j.cars.model.cmodel;
+package ru.job4j.cars.model.catologmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package ru.job4j.cars.repository.catalog;
+package ru.job4j.cars.repository.repcatalog;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

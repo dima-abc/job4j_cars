@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.cars.model.Car;
-import ru.job4j.cars.service.CarService;
-import ru.job4j.cars.service.MarkService;
+import ru.job4j.cars.service.*;
+import ru.job4j.cars.service.servcatalog.*;
 
 /**
  * 3. Мидл
@@ -26,29 +26,35 @@ import ru.job4j.cars.service.MarkService;
 public class CarController {
     private final CarService carService;
     private final MarkService markService;
+    private final ModelService modelService;
+    private final YearService yearService;
+    private final BodyService bodyService;
+    private final EngineService engineService;
+    private final CategoryService categoryService;
 
-    public CarController(CarService carService, MarkService markService) {
+    public CarController(CarService carService, MarkService markService, ModelService modelService,
+                         YearService yearService, BodyService bodyService, EngineService engineService,
+                         CategoryService categoryService) {
         this.carService = carService;
         this.markService = markService;
+        this.modelService = modelService;
+        this.yearService = yearService;
+        this.bodyService = bodyService;
+        this.engineService = engineService;
+        this.categoryService = categoryService;
     }
 
-    /**
-     * Добавление номера кузова автомобиля.
-     *
-     * @return
-     */
-    @GetMapping("/enterVin")
-    public String enterVin() {
-        return "car/selectMark";
+    @GetMapping("/createCar")
+    public String selectModel(@RequestParam("mark.id") int markId, Model model) {
+        model.addAttribute("mark", markService.findByIdMark(markId));
+        model.addAttribute("models", modelService.findAllMark(markId));
+        model.addAttribute("categories", categoryService.findAllCategory());
+        model.addAttribute("years", yearService.findAllYear());
+        model.addAttribute("bodies", bodyService.findAllBody());
+        model.addAttribute("engines", engineService.findAllEngine());
+        return "car/createCar";
     }
 
-    @GetMapping("selectMark")
-    public String selectMark(Model model, @RequestParam("vin") String vin) {
-        Car car = new Car();
-        car.setVin(vin);
-        model.addAttribute("car", car);
-        return "car/selectModel";
-    }
 
     /**
      * Отображение изображения.

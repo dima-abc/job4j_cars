@@ -1,9 +1,9 @@
-package ru.job4j.cars.repository.catalog;
+package ru.job4j.cars.repository.repcatalog;
 
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.cmodel.Mark;
-import ru.job4j.cars.model.cmodel.Model;
+import ru.job4j.cars.model.catologmodel.Mark;
+import ru.job4j.cars.model.catologmodel.Model;
 
 import java.util.List;
 
@@ -33,7 +33,12 @@ public class ModelRepository implements ICatalog<Model> {
      */
     @Override
     public Model findById(int id) {
-        return tx(session -> session.get(Model.class, id), sf);
+        return tx(session -> session.createQuery(
+                        "select mo from Model mo "
+                                + "join fetch mo.mark mr "
+                                + "where mo.id = :mId", Model.class)
+                .setParameter("mId", id)
+                .uniqueResult(), sf);
     }
 
     /**
@@ -45,7 +50,8 @@ public class ModelRepository implements ICatalog<Model> {
     public List<Model> findAllMark(int idMark) {
         Mark mark = new Mark();
         mark.setId(idMark);
-        return tx(session -> session.createQuery("from Model where mark=:mark")
+        return tx(session -> session
+                .createQuery("from Model where mark=:mark")
                 .setParameter("mark", mark)
                 .list(), sf);
     }
@@ -57,6 +63,9 @@ public class ModelRepository implements ICatalog<Model> {
      */
     @Override
     public List<Model> findAll() {
-        return tx(session -> session.createQuery("from Model").list(), sf);
+        return tx(session -> session
+                        .createQuery("from Model order by id")
+                        .list(),
+                sf);
     }
 }
