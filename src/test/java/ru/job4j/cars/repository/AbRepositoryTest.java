@@ -75,21 +75,21 @@ class AbRepositoryTest {
 
     @Test
     void getLastDay() {
-        AbRepository abRepository = new AbRepository(sf);
+        Repository abRepository = new Repository(sf);
         List<Ab> result = abRepository.getLastDay();
         assertEquals(expected, result);
     }
 
     @Test
     void getWithPhoto() {
-        AbRepository abRepository = new AbRepository(sf);
+        Repository abRepository = new Repository(sf);
         List<Ab> result = abRepository.getWithPhoto();
         assertEquals(expected, result);
     }
 
     @Test
     void getWithMark() {
-        AbRepository abRepository = new AbRepository(sf);
+        Repository abRepository = new Repository(sf);
         Mark mark = Mark.of("", null);
         mark.setId(1);
         List<Ab> result = abRepository.getWithMark(mark);

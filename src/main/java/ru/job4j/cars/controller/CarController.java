@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.cars.model.Car;
+import ru.job4j.cars.repository.repcatalog.ColorService;
 import ru.job4j.cars.service.*;
 import ru.job4j.cars.service.servcatalog.*;
 
@@ -31,10 +32,12 @@ public class CarController {
     private final BodyService bodyService;
     private final EngineService engineService;
     private final CategoryService categoryService;
+    private final TransmissionService transmissionService;
+    private final ColorService colorService;
 
     public CarController(CarService carService, MarkService markService, ModelService modelService,
                          YearService yearService, BodyService bodyService, EngineService engineService,
-                         CategoryService categoryService) {
+                         CategoryService categoryService, TransmissionService transmissionService, ColorService colorService) {
         this.carService = carService;
         this.markService = markService;
         this.modelService = modelService;
@@ -42,16 +45,21 @@ public class CarController {
         this.bodyService = bodyService;
         this.engineService = engineService;
         this.categoryService = categoryService;
+        this.transmissionService = transmissionService;
+        this.colorService = colorService;
     }
 
     @GetMapping("/createCar")
     public String selectModel(@RequestParam("mark.id") int markId, Model model) {
+        model.addAttribute("car", new Car());
         model.addAttribute("mark", markService.findByIdMark(markId));
         model.addAttribute("models", modelService.findAllMark(markId));
         model.addAttribute("categories", categoryService.findAllCategory());
         model.addAttribute("years", yearService.findAllYear());
         model.addAttribute("bodies", bodyService.findAllBody());
         model.addAttribute("engines", engineService.findAllEngine());
+        model.addAttribute("transmissions", transmissionService.findAllTransmission());
+        model.addAttribute("colors", colorService.findAllColor());
         return "car/createCar";
     }
 

@@ -1,7 +1,6 @@
 package ru.job4j.cars.repository;
 
 import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Ab;
 import ru.job4j.cars.model.catologmodel.Mark;
 
@@ -16,13 +15,13 @@ import java.util.List;
  * 3.3.2. Mapping
  * 3.3.3. HQL, Criteria
  * 2. Фильтры для площадок машин [#4745]
- * AbRepository слой persistence модели данны обьявлений "Ab"
+ * Repository слой persistence модели данны обьявлений "Ab"
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 28.05.2022
  */
-@Repository
-public class AbRepository implements IAbRepository<Ab> {
+@org.springframework.stereotype.Repository
+public class Repository implements IRepository<Ab> {
     private static final String HQL_AB = new StringBuilder()
             .append("select ab from Ab ab ")
             .append("join fetch ab.car ca ")
@@ -39,13 +38,16 @@ public class AbRepository implements IAbRepository<Ab> {
 
     private final SessionFactory sf;
 
-    public AbRepository(SessionFactory sf) {
+    public Repository(SessionFactory sf) {
         this.sf = sf;
     }
 
     @Override
     public boolean created(Ab type) {
-        return false;
+        return tx(session -> {
+            session.save(type);
+            return true;
+        }, sf);
     }
 
     @Override

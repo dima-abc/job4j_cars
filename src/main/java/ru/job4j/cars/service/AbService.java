@@ -2,7 +2,7 @@ package ru.job4j.cars.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.model.Ab;
-import ru.job4j.cars.repository.AbRepository;
+import ru.job4j.cars.repository.Repository;
 
 import java.util.List;
 
@@ -18,10 +18,14 @@ import java.util.List;
  */
 @Service
 public class AbService {
-    private final AbRepository store;
+    private final Repository store;
 
-    public AbService(AbRepository store) {
+    public AbService(Repository store) {
         this.store = store;
+    }
+
+    public boolean create(Ab ab) {
+        return store.created(ab);
     }
 
     public List<Ab> getWithPhotoAb() {

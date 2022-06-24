@@ -21,6 +21,10 @@ public class CarService {
         this.store = store;
     }
 
+    public boolean create(Car car) {
+        return store.created(car);
+    }
+
     public Car findByIdCar(int id) {
         return store.findById(id);
     }

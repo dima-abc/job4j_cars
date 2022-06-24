@@ -7,11 +7,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import ru.job4j.cars.model.Ab;
 import ru.job4j.cars.model.Car;
+import ru.job4j.cars.model.User;
 import ru.job4j.cars.service.AbService;
 import ru.job4j.cars.service.CarService;
+
+import java.io.IOException;
 
 /**
  * 3. Мидл
@@ -26,9 +30,11 @@ import ru.job4j.cars.service.CarService;
 @Controller
 public class AbController {
     private final AbService abService;
+    private final CarService carService;
 
-    public AbController(AbService abService) {
+    public AbController(AbService abService, CarService carService) {
         this.abService = abService;
+        this.carService = carService;
     }
 
     /**
@@ -43,9 +49,17 @@ public class AbController {
         return "ab/index";
     }
 
-    @GetMapping("/addAb")
-    public String create(Model model) {
-        return "ab/addAb";
+    @PostMapping("/createAb")
+    public String create(@ModelAttribute Car car,
+                         @RequestParam("file") MultipartFile file) throws IOException {
+        System.out.println("******************" + car.toString());
+        System.out.println("**********************" + file.getBytes().toString());
+        car.setPhoto(file.getBytes());
+        carService.create(car);
+        System.out.println("******************" + car.toString());
+        Ab newAb = Ab.of(car.getModel().getName(), car, new User());
+        abService.create(newAb);
+        return "redirect:/";
     }
 
 

@@ -42,6 +42,9 @@ public class ColorRepository implements ICatalog<Color> {
      */
     @Override
     public List<Color> findAll() {
-        return tx(session -> session.createQuery("from Color").list(), sf);
+        return tx(session -> session
+                .createQuery("from Color order by name")
+                .list(),
+                sf);
     }
 }

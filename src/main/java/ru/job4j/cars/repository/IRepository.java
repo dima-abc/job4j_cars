@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @author Dmitry Stepanov, user Dmitry
  * @since 08.06.2022
  */
-public interface IAbRepository<T> {
+public interface IRepository<T> {
     boolean created(T type);
 
     boolean update(int id, T type);
