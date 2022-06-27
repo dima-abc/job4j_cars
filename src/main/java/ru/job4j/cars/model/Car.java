@@ -62,7 +62,7 @@ public class Car implements Serializable {
     @JoinTable(name = "history_owner", joinColumns = {
             @JoinColumn(name = "driver_id", nullable = false, updatable = false)},
             inverseJoinColumns = {
-                    @JoinColumn(name = "vin", nullable = false, updatable = false)})
+                    @JoinColumn(name = "vin")})
     private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
 
     public static Car of(String vin, double price, int mileage, Category category, Model model, Year year, Body body,

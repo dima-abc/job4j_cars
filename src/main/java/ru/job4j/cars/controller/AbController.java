@@ -52,12 +52,11 @@ public class AbController {
     @PostMapping("/createAb")
     public String create(@ModelAttribute Car car,
                          @RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println("******************" + car.toString());
-        System.out.println("**********************" + file.getBytes().toString());
         car.setPhoto(file.getBytes());
         carService.create(car);
-        System.out.println("******************" + car.toString());
-        Ab newAb = Ab.of(car.getModel().getName(), car, new User());
+        User user = new User();
+        user.setId(1);
+        Ab newAb = Ab.of(car.getModel().getName(), car, user);
         abService.create(newAb);
         return "redirect:/";
     }
