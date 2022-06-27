@@ -25,6 +25,7 @@ import java.util.List;
 public class AbRepository implements IRepository<Ab> {
     private static final String HQL_AB = new StringBuilder()
             .append("select ab from Ab ab ")
+            .append("join fetch ab.user us ")
             .append("join fetch ab.car c ")
             .append("join fetch c.category ca ")
             .append("join fetch c.model mo ")

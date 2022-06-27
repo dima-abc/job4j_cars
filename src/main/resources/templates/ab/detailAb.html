@@ -29,28 +29,57 @@
     <div class="container py-4">
         <div class="p-5 mb-4 bg-light rounded-3">
             <hr class="my-4">
+            <!--Назвение объявления-->
+            <div class="input-group mb-3">
             <span th:if="${ab.done==null}">
-                <h3 class="p-3 mb-3 bg-success text-white" th:text="'ПРОДАЕТСЯ ' + ${ab.name}">
+                <h3 class="p-3 mb-3 bg-success text-white" th:text="${ab.name} + 'Цена: ' + ${ab.car.price} + 'Руб.'">
                 </h3>
             </span>
-            <span th:if="${ab.done!=null}">
-                <h3 class="p-3 mb-3 bg-danger text-white" th:text="'ПРОДАНО ' + ${ab.name}">
+                <span th:if="${ab.done!=null}">
+                <s>
+                    <h3 class="p-3 mb-3 bg-danger text-white"
+                        th:text="'ПРОДАНО ' + ${ab.name} + '. Цена: ' + ${ab.car.price} + 'Руб.'">
                 </h3>
+                </s>
             </span>
+            </div>
             <hr class="my-4">
-            <p class="col-md-8 fs-4">
-                Цена: <span th:text="${ab.car.price} + ' Р.'"/>
-            </p>
-            <p class="col-md-8 fs-4">
-                Пробег: <span th:text="${ab.car.mileage} + ' КМ.'"/>
-            </p>
-            <p class="text-justify col-md-8 fs-4">
-                Описание: <span th:text="${ab.car.description}"/>
-            </p>
-            <p class="col-md-8 fs-4">
-                Номер кузова: <span th:text="${ab.car.vin}"/>
-            </p>
-
+            <div class="card-body">
+                <!--Детали-->
+                <p class="col-md-8 fs-4">
+                    Пробег: <span th:text="${ab.car.mileage} + ' км'"/>
+                </p>
+                <p class="col-md-8 fs-4">
+                    Кузов: <span th:text="${ab.car.body.name}"/>
+                </p>
+                <p class="col-md-8 fs-4">
+                    Цвет: <span th:text="${ab.car.color.name}"/>
+                </p>
+                <p class="col-md-8 fs-4">
+                    Двигатель: <span th:text="${ab.car.engine.name}"/>
+                </p>
+                <p class="col-md-8 fs-4">
+                    Коробка: <span th:text="${ab.car.transmission.name}"/>
+                </p>
+                <p class="col-md-8 fs-4">
+                    Категория: <span th:text="${ab.car.category.name}"/>
+                </p>
+                <p class="col-md-8 fs-4">
+                    Номер кузова: <span th:text="${ab.car.vin}"/>
+                </p>
+                <p class="text-justify col-md-8 fs-4">
+                    Описание: <span th:text="${ab.car.description}"/>
+                </p>
+            </div>
+            <!--Фото обьявления-->
+            <div class="input-group mb-3">
+                <img class="rounded mx-auto d-block" th:src="@{|/imgCar/${ab.car.id}|}" alt="car_img">
+            </div>
+            <span th:if="${ab.done==null}">
+                <h3 class="p-3 mb-3 bg-warning text-white"
+                    th:text="'Продавец: ' + ${ab.user.name} + ' ' + ${ab.user.email}">
+                </h3>
+            </span>
         </div>
     </div>
     <footer th:insert="blocks/footer :: footer"></footer>
