@@ -73,7 +73,6 @@ public class CarController {
     @GetMapping("/imgCar/{carId}")
     public ResponseEntity<Resource> download(@PathVariable("carId") Integer carId) {
         Car car = carService.findByIdCar(carId);
-        System.out.println("*********************************" + car.getPhoto().toString());
         return ResponseEntity.ok()
                 .headers(new HttpHeaders())
                 .contentLength(car.getPhoto().length)

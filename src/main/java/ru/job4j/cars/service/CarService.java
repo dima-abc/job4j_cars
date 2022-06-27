@@ -25,7 +25,7 @@ public class CarService {
         return store.created(car);
     }
 
-    public Car findByIdCar(int id) {
-        return store.findById(id);
+    public Car findByIdCar(int idCar) {
+        return store.findById(idCar);
     }
 }

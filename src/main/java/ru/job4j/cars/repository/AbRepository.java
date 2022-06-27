@@ -1,6 +1,7 @@
 package ru.job4j.cars.repository;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Ab;
 import ru.job4j.cars.model.catologmodel.Mark;
 
@@ -15,30 +16,28 @@ import java.util.List;
  * 3.3.2. Mapping
  * 3.3.3. HQL, Criteria
  * 2. Фильтры для площадок машин [#4745]
- * Repository слой persistence модели данны обьявлений "Ab"
+ * AbRepository слой persistence модели данны обьявлений "Ab"
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 28.05.2022
  */
-@org.springframework.stereotype.Repository
-public class Repository implements IRepository<Ab> {
+@Repository
+public class AbRepository implements IRepository<Ab> {
     private static final String HQL_AB = new StringBuilder()
             .append("select ab from Ab ab ")
-            .append("join fetch ab.car ca ")
-            .append("join fetch ca.category cat ")
-            .append("join fetch ca.model mo ")
+            .append("join fetch ab.car c ")
+            .append("join fetch c.category ca ")
+            .append("join fetch c.model mo ")
             .append("join fetch mo.mark ma ")
-            .append("join fetch ca.year ye ")
-            .append("join fetch ca.body bo ")
-            .append("join fetch ca.engine en ")
-            .append("join fetch ca.transmission tr ")
-            .append("join fetch ca.color co ")
-            .append("join fetch ca.drivers dr ")
-            .append("join fetch ab.user").toString();
+            .append("join fetch c.year ye ")
+            .append("join fetch c.body bo ")
+            .append("join fetch c.engine en ")
+            .append("join fetch c.transmission tr ")
+            .append("join fetch c.color co").toString();
 
     private final SessionFactory sf;
 
-    public Repository(SessionFactory sf) {
+    public AbRepository(SessionFactory sf) {
         this.sf = sf;
     }
 
@@ -57,21 +56,13 @@ public class Repository implements IRepository<Ab> {
 
     @Override
     public Ab findById(int id) {
-        return null;
+        return tx(session -> session.createQuery(HQL_AB + " where ab.id =:abId", Ab.class)
+                .setParameter("abId", id).uniqueResult(), sf);
     }
 
     @Override
     public List<Ab> findAll() {
-        return tx(session -> session.createQuery("select a from Ab a "
-                + "join fetch a.car c "
-                + "join fetch c.category ca "
-                + "join fetch c.model mo "
-                + "join fetch mo.mark ma "
-                + "join fetch c.year ye "
-                + "join fetch c.body bo "
-                + "join fetch c.engine en "
-                + "join fetch c.transmission tr "
-                + "join fetch c.color co", Ab.class).list(), sf);
+        return tx(session -> session.createQuery(HQL_AB, Ab.class).list(), sf);
     }
 
     /**

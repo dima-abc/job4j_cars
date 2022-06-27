@@ -35,9 +35,9 @@ public class Ab implements Serializable {
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "USER_ID_FK"))
     private User user;
 
-    public static Ab of(String name, Car car, User user) {
+    public static Ab of(Car car, User user) {
         Ab ab = new Ab();
-        ab.name = name;
+        ab.name = ab.createName(car);
         ab.car = car;
         ab.user = user;
         return ab;
@@ -57,6 +57,15 @@ public class Ab implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    private String createName(Car car) {
+        return new StringBuilder()
+                .append(car.getModel().getMark().getName())
+                .append("(")
+                .append(car.getModel().getName())
+                .append("), ")
+                .append(car.getYear().getRelease()).append(" год.").toString();
     }
 
     public LocalDateTime getCreated() {

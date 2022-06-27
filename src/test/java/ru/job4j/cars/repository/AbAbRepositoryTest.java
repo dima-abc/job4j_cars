@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * 3.3.2. Mapping
  * 3.3.3. HQL, Criteria
  * 2. Фильтры для площадок машин [#4745]
- * AbRepositoryTest Поврехностное тестирование.
+ * AbAbRepositoryTest Поврехностное тестирование.
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 28.05.2022
  */
-class AbRepositoryTest {
+class AbAbRepositoryTest {
     private static SessionFactory sf;
     public static List<Ab> expected = new ArrayList<>();
 
@@ -54,7 +54,7 @@ class AbRepositoryTest {
             session.persist(mark);
             Model model = Model.of("NIVA", mark);
             session.persist(model);
-            Car car = Car.of("111", 1000.00D, 152000, Category.of("Легковой"), Model.of("Niva", mark),
+            Car car = Car.of("111", 1000.00D, 152000, Category.of("Легковой"), model,
                     Year.of(2020), body, engine, Transmission.of("Автомат"),
                     Color.of("Красный", "RED"), "", new byte[]{111});
             car.addDriver(driver);
@@ -75,21 +75,21 @@ class AbRepositoryTest {
 
     @Test
     void getLastDay() {
-        Repository abRepository = new Repository(sf);
+        AbRepository abRepository = new AbRepository(sf);
         List<Ab> result = abRepository.getLastDay();
         assertEquals(expected, result);
     }
 
     @Test
     void getWithPhoto() {
-        Repository abRepository = new Repository(sf);
+        AbRepository abRepository = new AbRepository(sf);
         List<Ab> result = abRepository.getWithPhoto();
         assertEquals(expected, result);
     }
 
     @Test
     void getWithMark() {
-        Repository abRepository = new Repository(sf);
+        AbRepository abRepository = new AbRepository(sf);
         Mark mark = Mark.of("", null);
         mark.setId(1);
         List<Ab> result = abRepository.getWithMark(mark);
