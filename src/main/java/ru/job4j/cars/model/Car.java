@@ -4,9 +4,7 @@ import ru.job4j.cars.model.catologmodel.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -34,8 +32,8 @@ public class Car implements Serializable {
     private int mileage;
     @Column(name = "description")
     private String description;
-    @Column(name = "photo")
-    private byte[] photo;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Photo> photos = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id", foreignKey = @ForeignKey(name = "CATEGORY_ID_FK"), nullable = false)
     private Category category;
@@ -62,12 +60,12 @@ public class Car implements Serializable {
     @JoinTable(name = "history_owner", joinColumns = {
             @JoinColumn(name = "driver_id", nullable = false, updatable = false)},
             inverseJoinColumns = {
-                    @JoinColumn(name = "vin")})
-    private final Set<Driver> drivers = new CopyOnWriteArraySet<>();
+                    @JoinColumn(name = "car_id", nullable = false, updatable = false)})
+    private final Set<Driver> drivers = new HashSet<>();
 
     public static Car of(String vin, double price, int mileage, Category category, Model model, Year year, Body body,
                          Engine engine, Transmission transmission, Color color,
-                         String description, byte[] photo) {
+                         String description) {
         Car car = new Car();
         car.vin = vin;
         car.price = price;
@@ -80,7 +78,6 @@ public class Car implements Serializable {
         car.transmission = transmission;
         car.color = color;
         car.description = description;
-        car.photo = photo;
         return car;
     }
 
@@ -180,12 +177,16 @@ public class Car implements Serializable {
         this.description = description;
     }
 
-    public byte[] getPhoto() {
-        return photo;
+    public List<Photo> getPhoto() {
+        return photos;
     }
 
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
+    public void setPhoto(List<Photo> photos) {
+        this.photos = photos;
+    }
+
+    public void addPhoto(Photo photo) {
+        this.photos.add(photo);
     }
 
     public Set<Driver> getDrivers() {
@@ -216,7 +217,7 @@ public class Car implements Serializable {
     @Override
     public String toString() {
         return "Car{id=" + id + ", vin=" + vin + ", price=" + price + ", mileage=" + mileage
-                + ", description='" + description + '\'' + ", photo=" + Arrays.toString(photo)
+                + ", description='" + description + '\'' + ", photo=" + photos
                 + ", category=" + category + ", model=" + model + ", year=" + year + ", body=" + body
                 + ", engine=" + engine + ", transmission=" + transmission + ", color=" + color
                 + ", drivers=" + drivers + '}';

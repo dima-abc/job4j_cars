@@ -28,7 +28,10 @@ public class CarRepository implements IRepository<Car> {
             .append("join fetch ca.body bo ")
             .append("join fetch ca.engine en ")
             .append("join fetch ca.transmission tr ")
-            .append("join fetch ca.color co").toString();
+            .append("join fetch ca.color co ")
+            .append("join fetch ca.drivers di ")
+            .append("join fetch ca.photos ph")
+            .toString();
 
     public CarRepository(SessionFactory sf) {
         this.sf = sf;

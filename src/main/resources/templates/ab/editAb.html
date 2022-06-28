@@ -21,7 +21,7 @@
     <!-- Bootstrap icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
 
-    <title>CAR sales new Ab</title>
+    <title>CAR sales edit</title>
 </head>
 <body>
 <div class="container py-3">
@@ -32,17 +32,16 @@
                 Выберете модель и введите параметры автомобиля
             </div>
             <div class="card-body">
-                <form class="row g-3" th:action="@{/createAb}" method="POST" th:object="${car}"
-                      enctype="multipart/form-data">
+                <form class="row g-3" th:action="@{/editAbPost}" method="POST" th:object="${ab}" enctype="multipart/form-data">
+                    <input type="hidden" th:field="*{id}">
                     <!--Выбор модели автомобиля-->
                     <div class="col-md-6">
                         <label>Выберете модель</label>
                         <div class="input-group mb-3">
-                            <span class="input-group-text" id="mark-auto" th:text="${mark.name}">Марка автомобиля</span>
-                            <select class="form-control" aria-describedby="mark-auto" th:field="*{model.id}">
+                            <span class="input-group-text" id="mark-auto" th:text="${ab.car.model.mark.name}">Марка автомобиля</span>
+                            <select class="form-control" aria-describedby="mark-auto" th:field="*{ab.car.model.id}">
                                 <option th:each="model:${models}"
                                         th:value="${model.id}"
-                                        th:fill
                                         th:text="${model.name}">
                                 </option>
                             </select>
@@ -113,7 +112,7 @@
                     <div class="col-md-6">
                         <label class="form-label">Пробег</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" th:field="*{mileage}">
+                            <input type="text" class="form-control" th:field="*{mileage}" th:placeholder="${car.mileage}">
                             <span class="input-group-text">Километры</span>
                         </div>
                     </div>

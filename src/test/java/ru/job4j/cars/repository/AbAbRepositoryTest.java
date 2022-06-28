@@ -47,7 +47,7 @@ class AbAbRepositoryTest {
             Driver driver = Driver.of("DriverCar", "mail@mail.ru");
             Engine engine = Engine.of("2.0 TDI", "Дизель");
             Body body = Body.of("Sedan");
-            Mark mark = Mark.of("Lada", null);
+            Mark mark = Mark.of("Lada");
             session.save(driver);
             session.save(engine);
             session.persist(body);
@@ -56,12 +56,12 @@ class AbAbRepositoryTest {
             session.persist(model);
             Car car = Car.of("111", 1000.00D, 152000, Category.of("Легковой"), model,
                     Year.of(2020), body, engine, Transmission.of("Автомат"),
-                    Color.of("Красный", "RED"), "", new byte[]{111});
+                    Color.of("Красный", "RED"), "");
             car.addDriver(driver);
             session.persist(car);
             User user = User.of("Dima", "mail@mail.ru", "123");
             session.persist(user);
-            Ab ab = Ab.of("Sale Lada", car, user);
+            Ab ab = Ab.of(car, user);
             session.persist(ab);
             tx.commit();
             expected.add(ab);
@@ -90,7 +90,7 @@ class AbAbRepositoryTest {
     @Test
     void getWithMark() {
         AbRepository abRepository = new AbRepository(sf);
-        Mark mark = Mark.of("", null);
+        Mark mark = Mark.of("");
         mark.setId(1);
         List<Ab> result = abRepository.getWithMark(mark);
         assertEquals(expected, result);

@@ -27,7 +27,7 @@ public class ModelService {
         return modelRepository.findById(modelId);
     }
 
-    public List<Model> findAllMark(int markId) {
+    public List<Model> findAllModelByMarkId(int markId) {
         return modelRepository.findAllMark(markId);
     }
 }

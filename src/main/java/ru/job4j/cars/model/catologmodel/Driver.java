@@ -1,4 +1,4 @@
-package ru.job4j.cars.model;
+package ru.job4j.cars.model.catologmodel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +23,7 @@ public class Driver implements Serializable {
     private int id;
     @Column(name = "driver", nullable = false)
     private String name;
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     private String email;
 
     public static Driver of(String name, String email) {

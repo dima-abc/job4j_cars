@@ -21,66 +21,115 @@
     <!-- Bootstrap icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
 
-    <title>CAR sales</title>
+    <title>CAR sales detail</title>
 </head>
 <body>
 <div class="container py-3">
     <header th:insert="blocks/header :: header"></header>
     <div class="container py-4">
         <div class="p-5 mb-4 bg-light rounded-3">
+            <!--Кнопки редактировать продано-->
+            <div class="btn-group -5" role="group" aria-label="Basic mixed styles example">
+                <form th:action="@{/editAb}" method="get" th:object="${ab}">
+                    <input type="hidden" th:field="*{id}"/>
+                    <button type="submit" class="btn btn-primary btn-lg">Редактировать объявление</button>
+                </form>
+                <form th:action="@{/doneAb}" method="post" th:object="${ab}">
+                    <input type="hidden" th:field="*{id}"/>
+                    <button type="submit" class="btn btn-secondary btn-lg">Закрыть объявление</button>
+                </form>
+            </div>
             <hr class="my-4">
             <!--Назвение объявления-->
             <div class="input-group mb-3">
             <span th:if="${ab.done==null}">
-                <h3 class="p-3 mb-3 bg-success text-white" th:text="${ab.name} + 'Цена: ' + ${ab.car.price} + 'Руб.'">
+                <h3 class="p-3 mb-3 bg-success text-white" th:text="${ab.name} + ' Цена: ' + ${ab.car.price} + ' Руб.'">
                 </h3>
+                <h5 th:text="${ab.getCreatedFormat()}"></h5>
             </span>
+
                 <span th:if="${ab.done!=null}">
                 <s>
                     <h3 class="p-3 mb-3 bg-danger text-white"
-                        th:text="'ПРОДАНО ' + ${ab.name} + '. Цена: ' + ${ab.car.price} + 'Руб.'">
+                        th:text="'ПРОДАНО ' + ${ab.name} + ' Цена: ' + ${ab.car.price} + 'Руб.'">
                 </h3>
                 </s>
+                    <h5 th:text="${ab.getCreatedFormat()}"></h5>
+                    <h5 th:text="${ab.getDoneFormat()}"></h5>
             </span>
             </div>
             <hr class="my-4">
             <div class="card-body">
                 <!--Детали-->
                 <p class="col-md-8 fs-4">
-                    Пробег: <span th:text="${ab.car.mileage} + ' км'"/>
+                    <b>Пробег:</b> <span th:text="${ab.car.mileage} + ' км'"/>
                 </p>
                 <p class="col-md-8 fs-4">
-                    Кузов: <span th:text="${ab.car.body.name}"/>
+                    <b>Кузов:</b> <span th:text="${ab.car.body.name}"/>
                 </p>
                 <p class="col-md-8 fs-4">
-                    Цвет: <span th:text="${ab.car.color.name}"/>
+                    <b>Цвет:</b> <span th:text="${ab.car.color.name}"/>
                 </p>
                 <p class="col-md-8 fs-4">
-                    Двигатель: <span th:text="${ab.car.engine.name}"/>
+                    <b>Двигатель:</b> <span th:text="${ab.car.engine.name} + '(' + ${ab.car.engine.fuel} + ')'"/>
                 </p>
                 <p class="col-md-8 fs-4">
-                    Коробка: <span th:text="${ab.car.transmission.name}"/>
+                    <b>Коробка:</b> <span th:text="${ab.car.transmission.name}"/>
                 </p>
                 <p class="col-md-8 fs-4">
-                    Категория: <span th:text="${ab.car.category.name}"/>
+                    <b>Категория:</b> <span th:text="${ab.car.category.name}"/>
                 </p>
                 <p class="col-md-8 fs-4">
-                    Номер кузова: <span th:text="${ab.car.vin}"/>
+                    <b>Номер кузова:</b> <span th:text="${ab.car.vin}"/>
+                </p>
+                <p class="col-md-8 fs-4">
+                    <b>Количество владельцев:</b> <span th:text="${ab.car.drivers.size}"/>
                 </p>
                 <p class="text-justify col-md-8 fs-4">
-                    Описание: <span th:text="${ab.car.description}"/>
+                    <b>Описание:</b> <span th:text="${ab.car.description}"/>
                 </p>
             </div>
-            <!--Фото обьявления-->
-            <div class="input-group mb-3">
-                <img class="rounded mx-auto d-block" th:src="@{|/imgCar/${ab.car.id}|}" alt="car_img">
+            <!--Фото объявления-->
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img th:src="@{|/imgCar/${ab.car.id}/*{0}|}" class="d-block w-100" alt="car_img0">
+                    </div>
+                    <div class="carousel-item">
+                        <img th:src="@{|/imgCar/${ab.car.id}/*{1}|}" class="d-block w-100" alt="car_img1">
+                    </div>
+                    <div class="carousel-item">
+                        <img th:src="@{|/imgCar/${ab.car.id}/*{2}|}" class="d-block w-100" alt="car_img2">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <span th:if="${ab.done==null}">
-                <h3 class="p-3 mb-3 bg-warning text-white"
-                    th:text="'Продавец: ' + ${ab.user.name} + ' ' + ${ab.user.email}">
-                </h3>
-            </span>
         </div>
+        <hr class="my-4">
+        <!--Контакты-->
+        <span th:if="${ab.done==null}">
+                <p>
+                                  <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                          data-bs-target="#collapseWidthExample" aria-expanded="false"
+                                          aria-controls="collapseWidthExample">Посмотреть контакты</button>
+                </p>
+                <div style="min-height: 120px;">
+                     <div class="collapse collapse-horizontal" id="collapseWidthExample">
+                             <div class="card card-body" style="width: 300px;">
+                                 <p th:text="'Продавец: ' + ${ab.user.name} + '     Еmail: ' + ${ab.user.email}">Всплывающие контакты</p>
+                            </div>
+                     </div>
+                </div>
+            </span>
     </div>
     <footer th:insert="blocks/footer :: footer"></footer>
 </div>

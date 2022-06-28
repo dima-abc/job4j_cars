@@ -2,7 +2,10 @@ package ru.job4j.cars.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -34,6 +37,8 @@ public class Ab implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "USER_ID_FK"))
     private User user;
+    @Transient
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy");
 
     public static Ab of(Car car, User user) {
         Ab ab = new Ab();
@@ -98,6 +103,14 @@ public class Ab implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getCreatedFormat() {
+        return formatter.format(this.created);
+    }
+
+    public String getDoneFormat() {
+        return formatter.format(this.done);
     }
 
     @Override

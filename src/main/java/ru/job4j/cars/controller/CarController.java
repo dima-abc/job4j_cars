@@ -53,7 +53,7 @@ public class CarController {
     public String selectModel(@RequestParam("mark.id") int markId, Model model) {
         model.addAttribute("car", new Car());
         model.addAttribute("mark", markService.findByIdMark(markId));
-        model.addAttribute("models", modelService.findAllMark(markId));
+        model.addAttribute("models", modelService.findAllModelByMarkId(markId));
         model.addAttribute("categories", categoryService.findAllCategory());
         model.addAttribute("years", yearService.findAllYear());
         model.addAttribute("bodies", bodyService.findAllBody());
@@ -70,12 +70,13 @@ public class CarController {
      * @param carId int.
      * @return ResponseEntity
      */
-    @GetMapping("/imgCar/{carId}")
-    public ResponseEntity<Resource> download(@PathVariable("carId") Integer carId) {
+    @GetMapping("/imgCar/{carId}/{imgId}")
+    public ResponseEntity<Resource> download(@PathVariable("carId") Integer carId,
+                                             @PathVariable("imgId") Integer imgId) {
         Car car = carService.findByIdCar(carId);
         return ResponseEntity.ok()
                 .headers(new HttpHeaders())
-                .contentLength(car.getPhoto().length)
-                .body(new ByteArrayResource(car.getPhoto()));
+                .contentLength(car.getPhoto().get(imgId).getImg().length)
+                .body(new ByteArrayResource(car.getPhoto().get(imgId).getImg()));
     }
 }

@@ -24,17 +24,20 @@ import java.util.List;
 @Repository
 public class AbRepository implements IRepository<Ab> {
     private static final String HQL_AB = new StringBuilder()
-            .append("select ab from Ab ab ")
+            .append("select distinct ab from Ab ab ")
             .append("join fetch ab.user us ")
             .append("join fetch ab.car c ")
             .append("join fetch c.category ca ")
             .append("join fetch c.model mo ")
+            .append("join fetch c.photos ph ")
             .append("join fetch mo.mark ma ")
             .append("join fetch c.year ye ")
             .append("join fetch c.body bo ")
             .append("join fetch c.engine en ")
             .append("join fetch c.transmission tr ")
-            .append("join fetch c.color co").toString();
+            .append("join fetch c.color co ")
+            .append("join fetch c.drivers di")
+            .toString();
 
     private final SessionFactory sf;
 

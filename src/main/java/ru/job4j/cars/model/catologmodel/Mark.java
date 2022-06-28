@@ -24,7 +24,7 @@ public class Mark implements Serializable {
     @Column(name = "mark", nullable = false, unique = true)
     private String name;
 
-    public static Mark of(String name, byte[] logo) {
+    public static Mark of(String name) {
         Mark mark = new Mark();
         mark.name = name;
         return mark;
