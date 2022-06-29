@@ -10,10 +10,13 @@
     <include file="scripts/catalog/marks.sql" relativeToChangelogFile="true"/>
     <include file="scripts/catalog/models.sql" relativeToChangelogFile="true"/>
     <include file="scripts/catalog/bodies.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/engines.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/engines.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/categories.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/years.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/transmissions.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/colors.sql" relativeToChangelogFile="true"/>
     <include file="scripts/drivers.sql" relativeToChangelogFile="true"/>
     <include file="scripts/cars.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/catalog/history_owner.sql" relativeToChangelogFile="true"/>
     <include file="scripts/users.sql" relativeToChangelogFile="true"/>
     <include file="scripts/abs.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

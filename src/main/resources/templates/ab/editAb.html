@@ -29,28 +29,23 @@
     <main>
         <div class="card p-3 mb-2 bg-label text-dark" style="width: 100%">
             <div class="card-header">
-                Выберете модель и введите параметры автомобиля
+                Редактирование объявления
             </div>
             <div class="card-body">
                 <form class="row g-3" th:action="@{/editAbPost}" method="POST" th:object="${ab}" enctype="multipart/form-data">
                     <input type="hidden" th:field="*{id}">
-                    <!--Выбор модели автомобиля-->
-                    <div class="col-md-6">
-                        <label>Выберете модель</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="mark-auto" th:text="${ab.car.model.mark.name}">Марка автомобиля</span>
-                            <select class="form-control" aria-describedby="mark-auto" th:field="*{ab.car.model.id}">
-                                <option th:each="model:${models}"
-                                        th:value="${model.id}"
-                                        th:text="${model.name}">
-                                </option>
-                            </select>
-                        </div>
+                    <input type="hidden" th:field="*{name}">
+                    <input type="hidden" th:field="*{car.id}">
+                    <input type="hidden" th:field="*{car.model.id}">
+                    <input type="hidden" th:field="*{user.id}">
+                    <!-- Марка + Модель-->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="mark-model" th:text="*{car.model.mark.name} + '(' + *{car.model.name} + ')'">Марка автомобиля</span>
                     </div>
                     <!--Выбор категории-->
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label>Категория</label>
-                        <select class="form-control" th:field="*{category.id}">
+                        <select class="form-control" th:field="*{car.category.id}">
                             <option th:each="category:${categories}"
                                     th:value="${category.id}"
                                     th:text="${category.name}">
@@ -60,7 +55,7 @@
                     <!--Выбор года выпуска-->
                     <div class="col-md-4">
                         <label>Год выпуска</label>
-                        <select class="form-control" th:field="*{year.id}">
+                        <select class="form-control" th:field="*{car.year.id}">
                             <option th:each="year:${years}"
                                     th:value="${year.id}"
                                     th:text="${year.release}">
@@ -70,7 +65,7 @@
                     <!--Выбор типа кузова-->
                     <div class="col-md-4">
                         <label>Кузов</label>
-                        <select class="form-control" th:field="*{body.id}">
+                        <select class="form-control" th:field="*{car.body.id}">
                             <option th:each="body:${bodies}"
                                     th:value="${body.id}"
                                     th:text="${body.name}">
@@ -80,7 +75,7 @@
                     <!--Тип двигателя-->
                     <div class="col-md-4">
                         <label>Двигатель</label>
-                        <select class="form-control" th:field="*{engine.id}">
+                        <select class="form-control" th:field="*{car.engine.id}">
                             <option th:each="engine:${engines}"
                                     th:value="${engine.id}"
                                     th:text="${engine.name} + '(' + ${engine.fuel} + ')'">
@@ -90,7 +85,7 @@
                     <!--Выбор типа трансмиссии-->
                     <div class="col-md-4">
                         <label>Коробка передач</label>
-                        <select class="form-control" th:field="*{transmission.id}">
+                        <select class="form-control" th:field="*{car.transmission.id}">
                             <option th:each="transmission:${transmissions}"
                                     th:value="${transmission.id}"
                                     th:text="${transmission.name}">
@@ -100,19 +95,18 @@
                     <!--Выбор цвета-->
                     <div class="col-md-4">
                         <label>Цвет</label>
-                        <select class="form-control" th:field="*{color.id}">
+                        <select class="form-control" th:field="*{car.color.id}">
                             <option th:each="color:${colors}"
                                     th:value="${color.id}"
                                     th:text="${color.name}">
                             </option>
                         </select>
                     </div>
-
                     <!-- Пробег -->
                     <div class="col-md-6">
                         <label class="form-label">Пробег</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" th:field="*{mileage}" th:placeholder="${car.mileage}">
+                            <input type="text" class="form-control" th:field="*{car.mileage}" th:placeholder="${ab.car.mileage}">
                             <span class="input-group-text">Километры</span>
                         </div>
                     </div>
@@ -121,7 +115,7 @@
                         <label class="form-label">Цена</label>
                         <div class="input-group">
                             <span class="input-group-text">Рублей</span>
-                            <input type="text" class="form-control" th:field="*{price}">
+                            <input type="text" class="form-control" th:field="*{car.price}" th:placeholder="${ab.car.price}">
                             <span class="input-group-text">.00</span>
                         </div>
                     </div>
@@ -129,14 +123,14 @@
                     <div class="col-md-12">
                         <label class="form-label">Номер кузова</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" th:field="*{vin}">
+                            <input type="text" class="form-control" th:field="*{car.vin}" th:placeholder="${ab.car.vin}">
                             <span class="input-group-text">VIN</span>
                         </div>
                     </div>
                     <!-- Описание -->
                     <div class="col-md-12">
                         <label class="form-label">Описание</label>
-                        <textarea class="form-control" th:field="*{description}" rows="3"></textarea>
+                        <textarea class="form-control" th:field="*{car.description}" rows="3" th:placeholder="${ab.car.description}"></textarea>
                     </div>
                     <!-- Добавить фото автомобиля -->
                     <div class="mb-3">
@@ -152,7 +146,7 @@
                         <input class="form-control" type="file" id="file2" name="file2">
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-outline-secondary">Опубликовать</button>
+                        <button type="submit" class="btn btn-outline-secondary">Сохранить изменения</button>
                     </div>
                 </form>
             </div>

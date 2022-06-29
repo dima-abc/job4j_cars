@@ -6,6 +6,7 @@ import ru.job4j.cars.model.User;
 import ru.job4j.cars.model.catologmodel.Mark;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 3. Мидл
@@ -17,21 +18,24 @@ import java.util.List;
  * @since 07.06.2022
  */
 @Repository
-public class UserRepository implements IRepository<User> {
+public class UserRepository implements IUser<User> {
     private final SessionFactory sf;
 
     public UserRepository(SessionFactory sf) {
         this.sf = sf;
     }
 
-    @Override
-    public boolean created(User user) {
-        return false;
-    }
 
     @Override
-    public boolean update(int id, User user) {
-        return false;
+    public boolean create(final User user) {
+        AtomicBoolean rsl = new AtomicBoolean(false);
+        try {
+            tx(session -> session.save(user), sf);
+            rsl.set(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rsl.get();
     }
 
     @Override
@@ -40,22 +44,31 @@ public class UserRepository implements IRepository<User> {
     }
 
     @Override
-    public List<User> findAll() {
-        return null;
+    public boolean update(final User user) {
+        AtomicBoolean rsl = new AtomicBoolean(false);
+        try {
+            rsl.set(
+                    tx(session -> session
+                            .createQuery("update User set name=:name, email=:email, password=:password"
+                                    + " where id=:id")
+                            .setParameter("name", user.getName())
+                            .setParameter("email", user.getEmail())
+                            .setParameter("password", user.getPassword())
+                            .setParameter("id", user.getId())
+                            .executeUpdate() > 0, sf)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rsl.get();
     }
 
     @Override
-    public List<User> getLastDay() {
-        return null;
-    }
-
-    @Override
-    public List<User> getWithPhoto() {
-        return null;
-    }
-
-    @Override
-    public List<User> getWithMark(Mark mark) {
-        return null;
+    public User findByEmailPassword(User user) {
+        return (User) tx(session -> session
+                .createQuery("from User where email=:email and password=:password")
+                .setParameter("email", user.getEmail())
+                .setParameter("password", user.getPassword())
+                .uniqueResult(), sf);
     }
 }

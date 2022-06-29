@@ -45,7 +45,7 @@
             <span th:if="${ab.done==null}">
                 <h3 class="p-3 mb-3 bg-success text-white" th:text="${ab.name} + ' Цена: ' + ${ab.car.price} + ' Руб.'">
                 </h3>
-                <h5 th:text="${ab.getCreatedFormat()}"></h5>
+                <h5 th:text="'опубликовано: ' + ${ab.getCreatedFormat()}"></h5>
             </span>
 
                 <span th:if="${ab.done!=null}">
@@ -54,8 +54,8 @@
                         th:text="'ПРОДАНО ' + ${ab.name} + ' Цена: ' + ${ab.car.price} + 'Руб.'">
                 </h3>
                 </s>
-                    <h5 th:text="${ab.getCreatedFormat()}"></h5>
-                    <h5 th:text="${ab.getDoneFormat()}"></h5>
+                    <h5 th:text="'опубликовано: ' + ${ab.getCreatedFormat()}"></h5>
+                    <h5 th:text="'закрыто: ' + ${ab.getDoneFormat()}"></h5>
             </span>
             </div>
             <hr class="my-4">

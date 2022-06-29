@@ -25,6 +25,10 @@ public class CarService {
         return store.created(car);
     }
 
+    public boolean update(int idCar, Car car) {
+        return store.update(idCar, car);
+    }
+
     public Car findByIdCar(int idCar) {
         return store.findById(idCar);
     }

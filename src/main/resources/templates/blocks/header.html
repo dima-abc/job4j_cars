@@ -22,6 +22,27 @@
                         <a class="nav-item nav-link active" th:href="@{/electric}">Электромобиль</a>
                     </li>
                 </ul>
+                <ul class="nav">
+                    <li class="nav-item" th:if="${user.name == 'Гость'}">
+                        <div class="nav-link link-dark px-2">
+                            <a th:href="@{/login}">
+                                <span th:text="${user.name}"></span>
+                                <span> | Войти</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item" th:if="${user.name != 'Гость'}">
+                        <div class="nav-link link-dark px-2">
+                            <a th:href="@{/editUser}">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a th:href="@{/logout}">
+                                <span th:text="${user.name}"></span>
+                                <span> | Выйти</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>

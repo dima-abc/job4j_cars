@@ -1,7 +1,8 @@
-package ru.job4j.cars.repository.repcatalog;
+package ru.job4j.cars.service.servcatalog;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.model.catologmodel.Color;
+import ru.job4j.cars.repository.repcatalog.ColorRepository;
 
 import java.util.List;
 

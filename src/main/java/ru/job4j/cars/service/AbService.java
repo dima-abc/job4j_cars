@@ -30,6 +30,9 @@ public class AbService {
         return abRepository.created(ab);
     }
 
+    public boolean update(int idAb, Ab ab) {
+        return abRepository.update(idAb, ab);
+    }
 
     public Optional<Ab> findByIdAb(int idAb) {
         return Optional.ofNullable(abRepository.findById(idAb));

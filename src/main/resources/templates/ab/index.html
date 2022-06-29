@@ -39,7 +39,7 @@
                     <tbody th:each="ab : ${abAll}">
                     <tr>
                         <td rowspan="3">
-                            <a th:href="@{/detailAb/{abId}(abId=${ab.id})}" class="badge badge-info">
+                            <a th:href="@{/detailAb/{idAb}(idAb=${ab.id})}" class="badge badge-info">
                                 <i class="bi bi-info-lg fs-3 md-3">
                                   <img th:width="200" th:high="200" th:src="@{|/imgCar/${ab.car.id}/*{0}|}" alt="car_img">
                                 </i>
@@ -65,7 +65,7 @@
                         <td>
                             <span th:if="${ab.done!=null}">
                             <div class="p-3 mb-3 bg-danger text-white">ПРОДАНО</div>
-                                <p th:text="${ab.getDoneFormat()}"></p>
+                                <p th:text="'закрыто: ' + ${ab.getDoneFormat()}"></p>
                         </span>
                             <span th:if="${ab.done==null}">
                                 <div class="p-3 mb-3 bg-success text-white">ПРОДАЕТСЯ</div>

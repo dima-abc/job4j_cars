@@ -2,6 +2,7 @@ package ru.job4j.cars.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.model.User;
+import ru.job4j.cars.repository.IUser;
 import ru.job4j.cars.repository.UserRepository;
 
 import java.util.Optional;
@@ -17,13 +18,25 @@ import java.util.Optional;
  */
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private final IUser<User> userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(IUser<User> userRepository) {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> findByUserId(int userId) {
+    public boolean create(final User user) {
+        return userRepository.create(user);
+    }
+
+    public boolean update(User user) {
+        return userRepository.update(user);
+    }
+
+    public Optional<User> findUserById(int userId) {
         return Optional.ofNullable(userRepository.findById(userId));
+    }
+
+    public Optional<User> findUserByEmailPassword(User user) {
+        return Optional.ofNullable(userRepository.findByEmailPassword(user));
     }
 }

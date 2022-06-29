@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @author Dmitry Stepanov, user Dmitry
  * @since 08.06.2022
  */
-public interface IRepository<T> {
+public interface IRepository<T> extends IWrapper {
     boolean created(T type);
 
     boolean update(int id, T type);
@@ -58,24 +58,4 @@ public interface IRepository<T> {
      * @return List.
      */
     List<T> getWithMark(Mark mark);
-
-    /**
-     * Шаблон проектирования WRAPPER.
-     *
-     * @param command Function
-     * @param <T>     T type.
-     * @return T type.
-     */
-    default <T> T tx(final Function<Session, T> command, SessionFactory sf) {
-        final Session session = sf.openSession();
-        final Transaction tx = session.beginTransaction();
-        try (session) {
-            T rsl = command.apply(session);
-            tx.commit();
-            return rsl;
-        } catch (final Exception e) {
-            tx.rollback();
-            throw e;
-        }
-    }
 }

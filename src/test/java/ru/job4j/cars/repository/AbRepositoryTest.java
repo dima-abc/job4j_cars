@@ -10,6 +10,8 @@ import ru.job4j.cars.model.catologmodel.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -18,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * 3.3.2. Mapping
  * 3.3.3. HQL, Criteria
  * 2. Фильтры для площадок машин [#4745]
- * AbAbRepositoryTest Поврехностное тестирование.
+ * AbRepositoryTest Поврехностное тестирование.
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 28.05.2022
  */
-class AbAbRepositoryTest {
+class AbRepositoryTest {
     private static SessionFactory sf;
     public static List<Ab> expected = new ArrayList<>();
 
@@ -58,6 +60,7 @@ class AbAbRepositoryTest {
                     Year.of(2020), body, engine, Transmission.of("Автомат"),
                     Color.of("Красный", "RED"), "");
             car.addDriver(driver);
+            car.addPhoto(Photo.of(new byte[]{1}));
             session.persist(car);
             User user = User.of("Dima", "mail@mail.ru", "123");
             session.persist(user);
@@ -84,7 +87,7 @@ class AbAbRepositoryTest {
     void getWithPhoto() {
         AbRepository abRepository = new AbRepository(sf);
         List<Ab> result = abRepository.getWithPhoto();
-        assertEquals(expected, result);
+        assertThat(expected, is(result));
     }
 
     @Test

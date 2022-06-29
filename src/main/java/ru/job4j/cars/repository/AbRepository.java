@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 3. Мидл
@@ -46,16 +47,28 @@ public class AbRepository implements IRepository<Ab> {
     }
 
     @Override
-    public boolean created(Ab type) {
+    public boolean created(final Ab ab) {
         return tx(session -> {
-            session.save(type);
+            session.save(ab);
             return true;
         }, sf);
     }
 
     @Override
-    public boolean update(int id, Ab type) {
-        return false;
+    public boolean update(int id, final Ab ab) {
+        AtomicBoolean result = new AtomicBoolean(false);
+        try {
+            this.tx(session -> {
+                        ab.setId(id);
+                        session.update(ab);
+                        result.set(true);
+                        return result.get();
+                    },
+                    sf);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result.get();
     }
 
     @Override
@@ -91,7 +104,7 @@ public class AbRepository implements IRepository<Ab> {
     @Override
     public List<Ab> getWithPhoto() {
         return tx(session ->
-                session.createQuery(HQL_AB + " where ca.photo != null", Ab.class)
+                session.createQuery(HQL_AB + " where c.photos.size > 0", Ab.class)
                         .list(), sf
         );
     }
@@ -103,7 +116,7 @@ public class AbRepository implements IRepository<Ab> {
      * @return List.
      */
     @Override
-    public List<Ab> getWithMark(Mark mark) {
+    public List<Ab> getWithMark(final Mark mark) {
         return tx(session ->
                 session.createQuery(HQL_AB + " where mo.mark =: mark", Ab.class)
                         .setParameter("mark", mark)

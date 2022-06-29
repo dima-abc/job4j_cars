@@ -66,7 +66,6 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "CategoryRepository{id=" + id + ", category='" + name + '\''
-                + ", models=" + '}';
+        return "Category{id=" + id + ", name='" + name + '\'' + '}';
     }
 }

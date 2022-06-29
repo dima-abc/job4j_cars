@@ -1,11 +1,8 @@
 package ru.job4j.cars.repository.repcatalog;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import ru.job4j.cars.repository.IWrapper;
 
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * 3. Мидл
@@ -17,7 +14,7 @@ import java.util.function.Function;
  * @author Dmitry Stepanov, user Dmitry
  * @since 07.06.2022
  */
-public interface ICatalog<T> {
+public interface ICatalog<T> extends IWrapper {
     /**
      * Данный метод должен возвращать модель T о его идентификатору.
      *
@@ -33,23 +30,5 @@ public interface ICatalog<T> {
      */
     List<T> findAll();
 
-    /**
-     * Шаблон проектирования WRAPPER.
-     *
-     * @param command Function
-     * @param <T>     T type.
-     * @return T type.
-     */
-    default <T> T tx(final Function<Session, T> command, SessionFactory sf) {
-        final Session session = sf.openSession();
-        final Transaction tx = session.beginTransaction();
-        try (session) {
-            T rsl = command.apply(session);
-            tx.commit();
-            return rsl;
-        } catch (final Exception e) {
-            tx.rollback();
-            throw e;
-        }
-    }
+
 }

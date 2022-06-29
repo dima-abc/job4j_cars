@@ -6,6 +6,7 @@ import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.catologmodel.Mark;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 3. Мидл
@@ -47,7 +48,19 @@ public class CarRepository implements IRepository<Car> {
 
     @Override
     public boolean update(int id, Car car) {
-        return false;
+        AtomicBoolean result = new AtomicBoolean(false);
+        try {
+            this.tx(session -> {
+                        car.setId(id);
+                        session.update(car);
+                        result.set(true);
+                        return result.get();
+                    },
+                    sf);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result.get();
     }
 
     @Override
