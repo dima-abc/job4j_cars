@@ -31,4 +31,11 @@ public class MarkController implements IController {
         model.addAttribute("marks", markService.findAllMark());
         return "car/selectMark";
     }
+
+    @GetMapping("/fMark")
+    public String fMarkSelect(Model model, HttpSession session) {
+        model.addAttribute("user", getUserSession(session));
+        model.addAttribute("marks", markService.findAllMark());
+        return "car/fMark";
+    }
 }

@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since 07.06.2022
  */
 @Repository
-public class CarRepository implements IRepository<Car> {
+public class CarRepository implements ICrud<Car> {
     private final SessionFactory sf;
     private static final String HQL_CAR = new StringBuilder()
             .append("select ca from Car ca ")
@@ -73,20 +73,5 @@ public class CarRepository implements IRepository<Car> {
     @Override
     public List<Car> findAll() {
         return tx(session -> session.createQuery(HQL_CAR).list(), sf);
-    }
-
-    @Override
-    public List<Car> getLastDay() {
-        return null;
-    }
-
-    @Override
-    public List<Car> getWithPhoto() {
-        return null;
-    }
-
-    @Override
-    public List<Car> getWithMark(Mark mark) {
-        return null;
     }
 }

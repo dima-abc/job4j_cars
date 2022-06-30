@@ -3,6 +3,8 @@ package ru.job4j.cars.repository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Ab;
+import ru.job4j.cars.model.catologmodel.Body;
+import ru.job4j.cars.model.catologmodel.Category;
 import ru.job4j.cars.model.catologmodel.Mark;
 
 import java.time.LocalDate;
@@ -23,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since 28.05.2022
  */
 @Repository
-public class AbRepository implements IRepository<Ab> {
+public class AbRepository implements IWrapper {
     private static final String HQL_AB = new StringBuilder()
             .append("select distinct ab from Ab ab ")
             .append("join fetch ab.user us ")
@@ -46,7 +48,6 @@ public class AbRepository implements IRepository<Ab> {
         this.sf = sf;
     }
 
-    @Override
     public boolean created(final Ab ab) {
         return tx(session -> {
             session.save(ab);
@@ -54,7 +55,6 @@ public class AbRepository implements IRepository<Ab> {
         }, sf);
     }
 
-    @Override
     public boolean update(int id, final Ab ab) {
         AtomicBoolean result = new AtomicBoolean(false);
         try {
@@ -71,13 +71,11 @@ public class AbRepository implements IRepository<Ab> {
         return result.get();
     }
 
-    @Override
     public Ab findById(int id) {
         return tx(session -> session.createQuery(HQL_AB + " where ab.id =:abId", Ab.class)
                 .setParameter("abId", id).uniqueResult(), sf);
     }
 
-    @Override
     public List<Ab> findAll() {
         return tx(session -> session.createQuery(HQL_AB, Ab.class).list(), sf);
     }
@@ -87,7 +85,6 @@ public class AbRepository implements IRepository<Ab> {
      *
      * @return List
      */
-    @Override
     public List<Ab> getLastDay() {
         return tx(session ->
                 session.createQuery(HQL_AB + " where ab.created >=: lastDay", Ab.class)
@@ -101,10 +98,9 @@ public class AbRepository implements IRepository<Ab> {
      *
      * @return List
      */
-    @Override
-    public List<Ab> getWithPhoto() {
+    public List<Ab> getWithActive() {
         return tx(session ->
-                session.createQuery(HQL_AB + " where c.photos.size > 0", Ab.class)
+                session.createQuery(HQL_AB + " where ab.done is null", Ab.class)
                         .list(), sf
         );
     }
@@ -115,11 +111,38 @@ public class AbRepository implements IRepository<Ab> {
      * @param mark Mark
      * @return List.
      */
-    @Override
     public List<Ab> getWithMark(final Mark mark) {
         return tx(session ->
                 session.createQuery(HQL_AB + " where mo.mark =: mark", Ab.class)
                         .setParameter("mark", mark)
+                        .list(), sf
+        );
+    }
+
+    /**
+     * Показать объявление определенной категории автомобиля.
+     *
+     * @param category Category.
+     * @return List.
+     */
+    public List<Ab> getWithCategory(final Category category) {
+        return tx(session ->
+                session.createQuery(HQL_AB + " where c.category =: category", Ab.class)
+                        .setParameter("category", category)
+                        .list(), sf
+        );
+    }
+
+    /**
+     * Показать объявлений по типу кузова автомобиля.
+     *
+     * @param body Body.
+     * @return List.
+     */
+    public List<Ab> getWithBody(final Body body) {
+        return tx(session ->
+                session.createQuery(HQL_AB + " where c.body =: body", Ab.class)
+                        .setParameter("body", body)
                         .list(), sf
         );
     }

@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.cars.model.Car;
+import ru.job4j.cars.model.catologmodel.Mark;
 import ru.job4j.cars.service.servcatalog.ColorService;
 import ru.job4j.cars.service.*;
 import ru.job4j.cars.service.servcatalog.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 /**
  * 3. Мидл
@@ -53,9 +55,13 @@ public class CarController implements IController {
 
     @GetMapping("/createCar")
     public String selectModel(@RequestParam("mark.id") int markId, Model model, HttpSession session) {
+        Optional<Mark> mark = markService.findByIdMark(markId);
+        if (mark.isEmpty()) {
+            return "redirect:/";
+        }
         model.addAttribute("user", getUserSession(session));
         model.addAttribute("car", new Car());
-        model.addAttribute("mark", markService.findByIdMark(markId));
+        model.addAttribute("mark", mark.get());
         model.addAttribute("models", modelService.findAllModelByMarkId(markId));
         model.addAttribute("categories", categoryService.findAllCategory());
         model.addAttribute("years", yearService.findAllYear());

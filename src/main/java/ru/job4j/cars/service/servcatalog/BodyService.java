@@ -5,6 +5,7 @@ import ru.job4j.cars.model.catologmodel.Body;
 import ru.job4j.cars.repository.repcatalog.BodyRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 3. Мидл
@@ -23,8 +24,8 @@ public class BodyService {
         this.bodyRepository = bodyRepository;
     }
 
-    public Body findByIdBody(int idBody) {
-        return bodyRepository.findById(idBody);
+    public Optional<Body> findByIdBody(int idBody) {
+        return Optional.ofNullable(bodyRepository.findById(idBody));
     }
 
     public List<Body> findAllBody() {

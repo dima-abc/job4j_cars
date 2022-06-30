@@ -5,6 +5,7 @@ import ru.job4j.cars.model.catologmodel.Category;
 import ru.job4j.cars.repository.repcatalog.CategoryRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 3. Мидл
@@ -23,8 +24,8 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category findByIdCategory(int categoryId) {
-        return categoryRepository.findById(categoryId);
+    public Optional<Category> findByIdCategory(int categoryId) {
+        return Optional.ofNullable(categoryRepository.findById(categoryId));
     }
 
     public List<Category> findAllCategory() {

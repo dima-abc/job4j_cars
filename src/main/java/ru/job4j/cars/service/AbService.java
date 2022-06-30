@@ -3,6 +3,9 @@ package ru.job4j.cars.service;
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.model.Ab;
 import ru.job4j.cars.model.Car;
+import ru.job4j.cars.model.catologmodel.Body;
+import ru.job4j.cars.model.catologmodel.Category;
+import ru.job4j.cars.model.catologmodel.Mark;
 import ru.job4j.cars.repository.AbRepository;
 
 import java.util.List;
@@ -38,11 +41,27 @@ public class AbService {
         return Optional.ofNullable(abRepository.findById(idAb));
     }
 
-    public List<Ab> getWithPhotoAb() {
-        return abRepository.getWithPhoto();
+    public List<Ab> getWithActive() {
+        return abRepository.getWithActive();
+    }
+
+    public List<Ab> getWithLatDay() {
+        return abRepository.getLastDay();
     }
 
     public List<Ab> findAllAb() {
         return abRepository.findAll();
+    }
+
+    public List<Ab> getWithMark(final Mark mark) {
+        return abRepository.getWithMark(mark);
+    }
+
+    public List<Ab> getWithCategory(final Category category) {
+        return abRepository.getWithCategory(category);
+    }
+
+    public List<Ab> getWithBody(final Body body) {
+        return abRepository.getWithBody(body);
     }
 }

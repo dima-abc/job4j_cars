@@ -6,18 +6,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.model.Ab;
 import ru.job4j.cars.model.Car;
-import ru.job4j.cars.model.catologmodel.Driver;
+import ru.job4j.cars.model.catologmodel.*;
 import ru.job4j.cars.model.User;
-import ru.job4j.cars.model.catologmodel.Photo;
 import ru.job4j.cars.service.servcatalog.ColorService;
 import ru.job4j.cars.service.AbService;
 import ru.job4j.cars.service.CarService;
-import ru.job4j.cars.service.UserService;
 import ru.job4j.cars.service.servcatalog.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * 3. Мидл
@@ -33,31 +32,26 @@ import java.time.LocalDateTime;
 public class AbController implements IController {
     private final AbService abService;
     private final CarService carService;
-    private final UserService userService;
-    private final MarkService markService;
-    private final ModelService modelService;
     private final YearService yearService;
     private final BodyService bodyService;
     private final EngineService engineService;
     private final CategoryService categoryService;
     private final TransmissionService transmissionService;
     private final ColorService colorService;
+    private final MarkService markService;
 
-    public AbController(AbService abService, CarService carService, UserService userService,
-                        MarkService markService, ModelService modelService, YearService yearService,
+    public AbController(AbService abService, CarService carService, YearService yearService,
                         BodyService bodyService, EngineService engineService, CategoryService categoryService,
-                        TransmissionService transmissionService, ColorService colorService) {
+                        TransmissionService transmissionService, ColorService colorService, MarkService markService) {
         this.abService = abService;
         this.carService = carService;
-        this.userService = userService;
-        this.markService = markService;
-        this.modelService = modelService;
         this.yearService = yearService;
         this.bodyService = bodyService;
         this.engineService = engineService;
         this.categoryService = categoryService;
         this.transmissionService = transmissionService;
         this.colorService = colorService;
+        this.markService = markService;
     }
 
     /**
@@ -111,8 +105,11 @@ public class AbController implements IController {
     public String detailAb(Model model, @PathVariable("idAb") int idAb,
                            HttpSession session) {
         model.addAttribute("user", getUserSession(session));
-        Ab ab = abService.findByIdAb(idAb).get();
-        model.addAttribute("ab", ab);
+        Optional<Ab> ab = abService.findByIdAb(idAb);
+        if (ab.isEmpty()) {
+            return "redirect:/";
+        }
+        model.addAttribute("ab", ab.get());
         return "ab/detailAb";
     }
 
@@ -124,10 +121,13 @@ public class AbController implements IController {
      */
     @PostMapping("/doneAb")
     public String doneAbPost(@RequestParam("id") int idAb) {
-        Ab ab = abService.findByIdAb(idAb).get();
-        ab.setDone(LocalDateTime.now().withNano(0));
-        abService.update(ab.getId(), ab);
-        return "redirect:/detailAb/" + ab.getId();
+        Optional<Ab> ab = abService.findByIdAb(idAb);
+        if (ab.isEmpty()) {
+            return "redirect:/";
+        }
+        ab.get().setDone(LocalDateTime.now().withNano(0));
+        abService.update(ab.get().getId(), ab.get());
+        return "redirect:/detailAb/" + ab.get().getId();
     }
 
     /**
@@ -141,15 +141,19 @@ public class AbController implements IController {
     @GetMapping("/editAb")
     public String editAbGet(Model model, @RequestParam("id") int idAb,
                             HttpSession session) {
-        model.addAttribute("user", getUserSession(session));
-        Ab ab = abService.findByIdAb(idAb).get();
+        User user = getUserSession(session);
+        model.addAttribute("user", user);
+        Optional<Ab> ab = abService.findByIdAb(idAb);
+        if (ab.isEmpty() || user.getId() != ab.get().getUser().getId()) {
+            return "redirect:/";
+        }
         model.addAttribute("years", yearService.findAllYear());
         model.addAttribute("bodies", bodyService.findAllBody());
         model.addAttribute("engines", engineService.findAllEngine());
         model.addAttribute("transmissions", transmissionService.findAllTransmission());
         model.addAttribute("colors", colorService.findAllColor());
         model.addAttribute("categories", categoryService.findAllCategory());
-        model.addAttribute("ab", ab);
+        model.addAttribute("ab", ab.get());
         return "ab/editAb";
     }
 
@@ -178,7 +182,92 @@ public class AbController implements IController {
         carService.update(updateCar.getId(), updateCar);
         ab.setDone(null);
         abService.update(ab.getId(), ab);
-        System.out.println(ab);
         return "redirect:/detailAb/" + ab.getId();
+    }
+
+    /**
+     * Отображение авто по выбранной марке.
+     *
+     * @param markId  Int
+     * @param model   Model
+     * @param session HttpSession
+     * @return String
+     */
+    @GetMapping("/fIndexMark")
+    public String fIndexMark(@RequestParam("mark.id") int markId, Model model, HttpSession session) {
+        model.addAttribute("user", getUserSession(session));
+        Optional<Mark> mark = markService.findByIdMark(markId);
+        if (mark.isEmpty()) {
+            return "redirect:/";
+        }
+        model.addAttribute("abFilter", abService.getWithMark(mark.get()));
+        return "ab/fIndex";
+    }
+
+    /**
+     * Отображение авто по выбранной категории.
+     *
+     * @param catId   Int
+     * @param model   Model
+     * @param session HttpSession
+     * @return String
+     */
+    @GetMapping("/fIndexCategory")
+    public String fIndexCategory(@RequestParam("category.id") int catId, Model model, HttpSession session) {
+        model.addAttribute("user", getUserSession(session));
+        Optional<Category> category = categoryService.findByIdCategory(catId);
+        if (category.isEmpty()) {
+            return "redirect:/";
+        }
+        model.addAttribute("abFilter", abService.getWithCategory(category.get()));
+        return "ab/fIndex";
+    }
+
+    /**
+     * Отображение авто по выбранному кузову.
+     *
+     * @param bodyId  Int
+     * @param model   Model
+     * @param session HttpSession
+     * @return String
+     */
+    @GetMapping("/fIndexBody")
+    public String fIndexBody(@RequestParam("body.id") int bodyId, Model model, HttpSession session) {
+        model.addAttribute("user", getUserSession(session));
+        Optional<Body> body = bodyService.findByIdBody(bodyId);
+        if (body.isEmpty()) {
+            return "redirect:/";
+        }
+        model.addAttribute("abFilter", abService.getWithBody(body.get()));
+        return "ab/fIndex";
+    }
+
+
+    /**
+     * Отображение авто Активных не проданных.
+     *
+     * @param model   Model
+     * @param session HttpSession
+     * @return String
+     */
+    @GetMapping("/fIndexActive")
+    public String fIndexActive(Model model, HttpSession session) {
+        model.addAttribute("user", getUserSession(session));
+        model.addAttribute("abFilter", abService.getWithActive());
+        return "ab/fIndex";
+    }
+
+    /**
+     * Отображение объявления опубликованное сегодня.
+     *
+     * @param model   Model
+     * @param session HttpSession
+     * @return String
+     */
+    @GetMapping("/fIndexLastDay")
+    public String fIndexLastDay(Model model, HttpSession session) {
+        model.addAttribute("user", getUserSession(session));
+        model.addAttribute("abFilter", abService.getWithLatDay());
+        return "ab/fIndex";
     }
 }

@@ -5,6 +5,7 @@ import ru.job4j.cars.model.catologmodel.Mark;
 import ru.job4j.cars.repository.repcatalog.MarkRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 3. Мидл
@@ -23,8 +24,8 @@ public class MarkService {
         this.markRepository = markRepository;
     }
 
-    public Mark findByIdMark(int idMark) {
-        return markRepository.findById(idMark);
+    public Optional<Mark> findByIdMark(int idMark) {
+        return Optional.ofNullable(markRepository.findById(idMark));
     }
 
     public List<Mark> findAllMark() {

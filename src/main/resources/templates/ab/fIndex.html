@@ -1,0 +1,83 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!-- Bootstrap Separate -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+
+    <!-- Bootstrap icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+
+    <title>CAR sales FILTER</title>
+</head>
+<body>
+<div class="container py-3">
+    <header th:insert="blocks/header :: header"></header>
+    <main>
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                <div class="row row-cols-md-4 mb-3 text-center">
+                    <form th:action="@{/selectMark}" method="get">
+                        <button type="submit" value="newAb" class="btn btn-outline-secondary">Подать объявление
+                        </button>
+                    </form>
+                </div>
+                <table class="table table-striped">
+                    <tbody th:each="ab : ${abFilter}">
+                    <tr>
+                        <td rowspan="3">
+                            <a th:href="@{/detailAb/{idAb}(idAb=${ab.id})}" class="badge badge-info">
+                                <i class="bi bi-info-lg fs-3 md-3">
+                                    <img th:width="200" th:high="200" th:src="@{|/imgCar/${ab.car.id}/*{0}|}" alt="car_img">
+                                </i>
+                            </a>
+                        </td>
+                        <td
+                                th:text="${ab.name}">
+                            Описание Марка+Модель+Год
+                        </td>
+                        <td th:text="'Цена: ' + ${ab.car.price} + ' ₽'">Цена</td>
+                    </tr>
+                    <tr>
+                        <td th:text="${ab.car.engine.name}
+                        + ', ' + ${ab.car.engine.fuel} + ', '
+                        + ${ab.car.transmission.name} + ', '
+                        + ${ab.car.mileage} + ' км.'">
+                            Двигатель+Топлива+КоробкаПередач+Пробег
+                        </td>
+                        <td th:text="'Опубликована: ' + ${ab.getCreatedFormat()}">Опубликована</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <span th:if="${ab.done!=null}">
+                            <div class="p-3 mb-3 bg-danger text-white">ПРОДАНО</div>
+                                <p th:text="'закрыто: ' + ${ab.getDoneFormat()}"></p>
+                        </span>
+                            <span th:if="${ab.done==null}">
+                                <div class="p-3 mb-3 bg-success text-white">ПРОДАЕТСЯ</div>
+                        </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+</body>
+</html>
