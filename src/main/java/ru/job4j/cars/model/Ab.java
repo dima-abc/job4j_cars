@@ -132,12 +132,7 @@ public class Ab implements Serializable {
 
     @Override
     public String toString() {
-        return "Ab{id=" + id + '}';
+        return "Ab{id=" + id + ", name='" + name + '\'' + ", created=" + created
+                + ", done=" + done + ", car=" + car + ", user=" + user + '}';
     }
-//
-//    @Override
-//    public String toString() {
-//        return "Ab{id=" + id + ", name='" + name + '\'' + ", created=" + created
-//                + ", done=" + done + ", car=" + car + ", user=" + user + '}';
-//    }
 }
