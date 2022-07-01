@@ -5,7 +5,6 @@ import ru.job4j.cars.model.catologmodel.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * 3. Мидл
@@ -63,9 +62,10 @@ public class Car implements Serializable {
                     @JoinColumn(name = "driver_id", nullable = false, updatable = false)})
     private final Set<Driver> drivers = new HashSet<>();
 
-    public static Car of(String vin, double price, int mileage, Category category, Model model, Year year, Body body,
-                         Engine engine, Transmission transmission, Color color,
-                         String description) {
+    public static Car of(String vin, double price, int mileage,
+                         Category category, Model model, Year year,
+                         Body body, Engine engine, Transmission transmission,
+                         Color color, String description) {
         Car car = new Car();
         car.vin = vin;
         car.price = price;

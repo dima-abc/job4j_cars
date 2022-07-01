@@ -28,6 +28,6 @@ public class ModelService {
     }
 
     public List<Model> findAllModelByMarkId(int markId) {
-        return modelRepository.findAllMark(markId);
+        return modelRepository.findByMark(markId);
     }
 }

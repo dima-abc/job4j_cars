@@ -47,7 +47,7 @@ public class ModelRepository implements ICatalog<Model> {
      * @param idMark int
      * @return List
      */
-    public List<Model> findAllMark(int idMark) {
+    public List<Model> findByMark(int idMark) {
         Mark mark = new Mark();
         mark.setId(idMark);
         return tx(session -> session

@@ -40,10 +40,14 @@ public class CarRepository implements ICrud<Car> {
 
     @Override
     public boolean created(Car car) {
-        return tx(session -> {
-            session.save(car);
-            return true;
-        }, sf);
+        AtomicBoolean rsl = new AtomicBoolean(false);
+        try {
+            tx(session -> session.save(car), sf);
+            rsl.set(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rsl.get();
     }
 
     @Override

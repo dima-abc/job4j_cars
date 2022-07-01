@@ -31,11 +31,6 @@ class AbRepositoryTest {
     private static SessionFactory sf;
     public static List<Ab> expected = new ArrayList<>();
 
-    @BeforeAll
-    public static void init() {
-        sf = HibernateUtil.getSessionFactory();
-    }
-
     @AfterAll
     public static void close() {
         if (sf != null) {
@@ -44,10 +39,15 @@ class AbRepositoryTest {
     }
 
     @BeforeAll
+    public static void init() {
+        sf = HibernateUtil.getSessionFactory();
+    }
+
+    @BeforeAll
     public static void addModelToData() {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();
-        try {
+        try (session) {
             Driver driver = Driver.of("DriverCar", "mail@mail.ru");
             Engine engine = Engine.of("2.0 TDI", "Дизель");
             Body body = Body.of("Sedan");
@@ -92,8 +92,6 @@ class AbRepositoryTest {
         } catch (Exception e) {
             tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 
