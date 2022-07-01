@@ -4,43 +4,53 @@ import org.checkerframework.checker.units.qual.A;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.junit.jupiter.api.*;
-import ru.job4j.cars.model.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import ru.job4j.cars.model.Ab;
+import ru.job4j.cars.model.Car;
+import ru.job4j.cars.model.User;
 import ru.job4j.cars.model.catologmodel.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * 3. Мидл
  * 3.3. Hibernate
- * 3.3.2. Mapping
- * 3.3.3. HQL, Criteria
- * 2. Фильтры для площадок машин [#4745]
- * AbRepositoryTest тестирование.
+ * 3.3.5. Контрольные вопросы
+ * 2. Тестовое задание. Hibernate. [#330581]
+ * AbRepository TEST
  *
- * @author Dmitry Stepanov, user Dima_Nout
- * @since 28.05.2022
+ * @author Dmitry Stepanov, user Dmitry
+ * @since 01.07.2022
  */
 class AbRepositoryTest {
     private static SessionFactory sf;
-    public static List<Ab> expected = new ArrayList<>();
-
-    @AfterAll
-    public static void close() {
-        if (sf != null) {
-            sf.close();
-        }
-    }
+    private static List<Ab> expected = new ArrayList<>();
+    private static List<Car> cars = new ArrayList<>();
+    private static AbRepository abRepository;
+    private static Category category = Category.of("moto");
+    private static Mark mark = Mark.of("LADA");
+    private static Mark markFromFind = Mark.of("BMW");
+    private static Model model = Model.of("NIVA", mark);
+    private static Model modelFromFind = Model.of("3 series", markFromFind);
+    private static Year year = Year.of(2022);
+    private static Body body = Body.of("Джип");
+    private static Engine engine = Engine.of("1.6", "GAS");
+    private static Transmission transmission = Transmission.of("ATT");
+    private static Color color = Color.of("RED", "RRR");
+    private static Driver driver = Driver.of("Iva", "iva@mail.ru");
+    private static User user = User.of("Danil", "danil@mail.ru", "123");
 
     @BeforeAll
     public static void init() {
         sf = HibernateUtil.getSessionFactory();
+        abRepository = new AbRepository(sf);
     }
 
     @BeforeAll
@@ -48,68 +58,150 @@ class AbRepositoryTest {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();
         try (session) {
-            Driver driver = Driver.of("DriverCar", "mail@mail.ru");
-            Engine engine = Engine.of("2.0 TDI", "Дизель");
-            Body body = Body.of("Sedan");
-            Mark mark = Mark.of("Lada");
-            Model model = Model.of("NIVA", mark);
-            Category category = Category.of("Легковой");
-            Year year = Year.of(2020);
-            Transmission transmission = Transmission.of("Автомат");
-            Color color = Color.of("Красный", "RED");
-            User user = User.of("Dima", "mail@mail.ru", "123");
-            session.persist(driver);
-            session.persist(engine);
-            session.persist(body);
-            session.persist(mark);
-            session.persist(model);
             session.persist(category);
+            session.persist(mark);
+            session.persist(markFromFind);
+            session.persist(model);
+            session.persist(modelFromFind);
             session.persist(year);
+            session.persist(body);
+            session.persist(engine);
             session.persist(transmission);
             session.persist(color);
+            session.persist(driver);
             session.persist(user);
-            Car car = Car.of("111", 1000.00D, 152000, category, model,
-                    year, body, engine, transmission,
-                    color, "");
-            Car car1 = Car.of("222", 2000.00D, 222000, category, model,
-                    year, body, engine, transmission,
-                    color, "");
-            car.addDriver(driver);
-            car.addPhoto(Photo.of(new byte[]{1}));
-            session.persist(car);
+            Car car1 = Car.of("vvv", 1000D, 120000,
+                    category, model, year, body, engine, transmission,
+                    color, "описание");
+            car1.addPhoto(Photo.of(new byte[]{1}));
             car1.addDriver(driver);
-            car1.addPhoto(Photo.of(new byte[]{2}));
+            Car car2 = Car.of("www", 2000D, 50000,
+                    category, model, year, body, engine, transmission,
+                    color, "описание 2");
+            car2.addPhoto(Photo.of(new byte[]{1}));
+            car2.addDriver(driver);
+            Car carFindMark = Car.of("findMark", 1000D, 2, category,
+                    modelFromFind, year, body, engine, transmission, color, "");
+            carFindMark.addPhoto(Photo.of(new byte[]{1}));
+            carFindMark.addDriver(driver);
             session.persist(car1);
-            Ab ab = Ab.of(car, user);
-            ab.setDone(LocalDateTime.now().withNano(0));
-            Ab ab1 = Ab.of(car1, user);
-            ab.setCreated(LocalDateTime.now().minusDays(2));
-            session.persist(ab);
-            session.persist(ab1);
+            session.persist(car2);
+            session.persist(carFindMark);
+            cars.add(car1);
+            cars.add(car2);
+            cars.add(carFindMark);
+            Ab abLastDay = Ab.of(car1, user);
+            Ab abDone = Ab.of(car2, user);
+            abDone.setCreated(LocalDateTime.now().minusDays(100));
+            abDone.setDone(LocalDateTime.now().withNano(0));
+            Ab abCreateYesterday = Ab.of(car1, user);
+            abCreateYesterday.setCreated(LocalDateTime.now().minusDays(5));
+            Ab abFindByMark = Ab.of(carFindMark, user);
+            session.persist(abLastDay);
+            session.persist(abDone);
+            session.persist(abCreateYesterday);
+            session.persist(abFindByMark);
+            expected.add(abLastDay);
+            expected.add(abDone);
+            expected.add(abCreateYesterday);
+            expected.add(abFindByMark);
             tx.commit();
-            expected.add(ab);
-            expected.add(ab1);
         } catch (Exception e) {
             tx.rollback();
-            e.printStackTrace();
         }
     }
 
     @Test
+    void createdAbThenTrue() {
+        Ab newAb = Ab.of(cars.get(1), user);
+        boolean result = abRepository.created(newAb);
+        Ab abInDb = abRepository.findById(newAb.getId());
+        expected.add(newAb);
+        assertEquals(abInDb, newAb);
+        assertTrue(result);
+
+    }
+
+    @Test
+    void updateAbThenTrue() {
+        Ab newAb = Ab.of(cars.get(1), user);
+        abRepository.created(newAb);
+        newAb.setDone(LocalDateTime.now().withNano(0));
+        boolean result = abRepository.update(newAb.getId(), newAb);
+        expected.add(newAb);
+        Ab abInDb = abRepository.findById(newAb.getId());
+        assertEquals(newAb, abInDb);
+        assertTrue(result);
+
+    }
+
+    @Test
+    void findByIdAb() {
+        Ab result = abRepository.findById(expected.get(1).getId());
+        assertEquals(expected.get(1), result);
+    }
+
+    @Test
+    void findByIdAbThenNull() {
+        Ab ab = abRepository.findById(-1);
+        assertNull(ab);
+    }
+
+    @Test
+    void findAllAb() {
+        List<Ab> result = abRepository.findAll();
+        assertEquals(expected, result);
+    }
+
+    @Test
     void getLastDay() {
-        AbRepository abRepository = new AbRepository(sf);
         List<Ab> result = abRepository.getLastDay();
-        assertEquals(List.of(expected.get(1)), result);
+        assertEquals(List.of(expected.get(0), expected.get(3), expected.get(4)), result);
+    }
+
+    @Test
+    void getWithActive() {
+        List<Ab> result = abRepository.getWithActive();
+        List<Ab> expect = List.of(expected.get(0), expected.get(2), expected.get(3), expected.get(4));
     }
 
     @Test
     void getWithMark() {
-        AbRepository abRepository = new AbRepository(sf);
-        Mark mark = new Mark();
-        mark.setId(1);
-        List<Ab> result = abRepository.getWithMark(mark);
+        List<Ab> result = abRepository.getWithMark(markFromFind);
+        List<Ab> expect = List.of(expected.get(3));
+        assertEquals(expect, result);
+    }
+
+    @Test
+    void getWithCategory() {
+        Ab ab = expected.get(0);
+        List<Ab> result = abRepository.getWithCategory(category);
         assertEquals(expected, result);
     }
 
+    @Test
+    void getWithBody() {
+        List<Ab> result = abRepository.getWithBody(body);
+        assertEquals(expected, result);
+    }
 
+    @AfterAll
+    public static void close() {
+        if (sf != null) {
+            sf.close();
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+/**
+ * Я осознаю что этот тест г-но.
+ */

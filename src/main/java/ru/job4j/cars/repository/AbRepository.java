@@ -49,10 +49,14 @@ public class AbRepository implements IWrapper {
     }
 
     public boolean created(final Ab ab) {
-        return tx(session -> {
-            session.save(ab);
-            return true;
-        }, sf);
+        AtomicBoolean rsl = new AtomicBoolean(false);
+        try {
+            tx(session -> session.save(ab), sf);
+            rsl.set(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rsl.get();
     }
 
     public boolean update(int id, final Ab ab) {

@@ -66,12 +66,12 @@ public class Driver implements Serializable {
             return false;
         }
         Driver driver = (Driver) o;
-        return Objects.equals(email, driver.email);
+        return id == driver.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email);
+        return Objects.hash(id);
     }
 
     @Override

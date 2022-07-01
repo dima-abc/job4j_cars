@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.catologmodel.*;
-import ru.job4j.cars.repository.repcatalog.YearRepository;
 
 import java.util.ArrayList;
 import java.util.List;
