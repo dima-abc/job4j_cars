@@ -1,3 +1,5 @@
+[![Java CI with Maven job4j_cars](https://github.com/Dima-Stepanov/job4j_cars/actions/workflows/maven.yml/badge.svg)](https://github.com/Dima-Stepanov/job4j_cars/actions/workflows/maven.yml)
+[![codecov](https://codecov.io/gh/Dima-Stepanov/job4j_cars/branch/master/graph/badge.svg?token=5PkSEUrrf8)](https://codecov.io/gh/Dima-Stepanov/job4j_cars)
 <h1>Проект job4j_cars</h1><br>
 <h2>Реализацие площадки машин.</h2><br>
 
