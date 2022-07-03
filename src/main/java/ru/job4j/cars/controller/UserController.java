@@ -25,8 +25,6 @@ import java.util.Optional;
 @Controller
 public class UserController implements IController {
     private final UserService userService;
-    private static final String IN = "Авторизация";
-    private static final String REG = "Регистрация";
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -93,7 +91,8 @@ public class UserController implements IController {
      * @return String
      */
     @PostMapping("newUser")
-    public String createUserPost(@ModelAttribute("user") User user, HttpServletRequest req) {
+    public String createUserPost(@ModelAttribute("user") User user,
+                                 HttpServletRequest req) {
         if (!userService.create(user)) {
             return "redirect:/newUser?userErr=true";
         }
