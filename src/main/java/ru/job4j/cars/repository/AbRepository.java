@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 3. Мидл
@@ -26,21 +25,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 @Repository
 public class AbRepository implements IWrapper {
-    private static final String HQL_AB = new StringBuilder()
-            .append("select distinct ab from Ab ab ")
-            .append("join fetch ab.user us ")
-            .append("join fetch ab.car c ")
-            .append("join fetch c.category ca ")
-            .append("join fetch c.model mo ")
-            .append("join fetch c.photos ph ")
-            .append("join fetch mo.mark ma ")
-            .append("join fetch c.year ye ")
-            .append("join fetch c.body bo ")
-            .append("join fetch c.engine en ")
-            .append("join fetch c.transmission tr ")
-            .append("join fetch c.color co ")
-            .append("join fetch c.drivers di")
-            .toString();
+    private static final String HQL_AB = "select distinct ab from Ab ab "
+            + "join fetch ab.user us "
+            + "join fetch ab.car c "
+            + "join fetch c.category ca "
+            + "join fetch c.model mo "
+            + "join fetch c.photos ph "
+            + "join fetch mo.mark ma "
+            + "join fetch c.year ye "
+            + "join fetch c.body bo "
+            + "join fetch c.engine en "
+            + "join fetch c.transmission tr "
+            + "join fetch c.color co "
+            + "join fetch c.drivers di";
 
     private final SessionFactory sf;
 
@@ -49,30 +46,29 @@ public class AbRepository implements IWrapper {
     }
 
     public boolean created(final Ab ab) {
-        AtomicBoolean rsl = new AtomicBoolean(false);
+        boolean result = false;
         try {
             tx(session -> session.save(ab), sf);
-            rsl.set(true);
+            result = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return rsl.get();
+        return result;
     }
 
     public boolean update(int id, final Ab ab) {
-        AtomicBoolean result = new AtomicBoolean(false);
+        boolean result = false;
         try {
-            this.tx(session -> {
+            result = this.tx(session -> {
                         ab.setId(id);
                         session.update(ab);
-                        result.set(true);
-                        return result.get();
+                        return true;
                     },
                     sf);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result.get();
+        return result;
     }
 
     public Ab findById(int id) {

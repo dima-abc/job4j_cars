@@ -13,7 +13,7 @@ import java.util.Objects;
  * 3.3. Hibernate
  * 3.3.2. Mapping
  * Реализовать площадку продаж машин. [#4747]
- * Ab модель данных описывает обьявление на площадке
+ * Ab модель данных описывает объявление на площадке
  *
  * @author Dmitry Stepanov, user Dima_Nout
  * @since 27.05.2022

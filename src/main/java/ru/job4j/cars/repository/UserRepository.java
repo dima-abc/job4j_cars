@@ -3,10 +3,6 @@ package ru.job4j.cars.repository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.User;
-import ru.job4j.cars.model.catologmodel.Mark;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 3. Мидл
@@ -28,14 +24,14 @@ public class UserRepository implements IUser<User> {
 
     @Override
     public boolean create(final User user) {
-        AtomicBoolean rsl = new AtomicBoolean(false);
+        boolean result = false;
         try {
             tx(session -> session.save(user), sf);
-            rsl.set(true);
+            result = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return rsl.get();
+        return result;
     }
 
     @Override
@@ -45,9 +41,9 @@ public class UserRepository implements IUser<User> {
 
     @Override
     public boolean update(final User user) {
-        AtomicBoolean rsl = new AtomicBoolean(false);
+        boolean result = false;
         try {
-            rsl.set(
+            result = (
                     tx(session -> session
                             .createQuery("update User set name=:name, email=:email, password=:password"
                                     + " where id=:id")
@@ -60,7 +56,7 @@ public class UserRepository implements IUser<User> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return rsl.get();
+        return result;
     }
 
     @Override

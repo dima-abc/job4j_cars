@@ -3,10 +3,8 @@ package ru.job4j.cars.repository;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Car;
-import ru.job4j.cars.model.catologmodel.Mark;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 3. Мидл
@@ -20,19 +18,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Repository
 public class CarRepository implements ICrud<Car> {
     private final SessionFactory sf;
-    private static final String HQL_CAR = new StringBuilder()
-            .append("select ca from Car ca ")
-            .append("join fetch ca.category cat ")
-            .append("join fetch ca.model mo ")
-            .append("join fetch mo.mark ma ")
-            .append("join fetch ca.year ye ")
-            .append("join fetch ca.body bo ")
-            .append("join fetch ca.engine en ")
-            .append("join fetch ca.transmission tr ")
-            .append("join fetch ca.color co ")
-            .append("join fetch ca.drivers di ")
-            .append("join fetch ca.photos ph")
-            .toString();
+    private static final String HQL_CAR = "select ca from Car ca "
+            + "join fetch ca.category cat "
+            + "join fetch ca.model mo "
+            + "join fetch mo.mark ma "
+            + "join fetch ca.year ye "
+            + "join fetch ca.body bo "
+            + "join fetch ca.engine en "
+            + "join fetch ca.transmission tr "
+            + "join fetch ca.color co "
+            + "join fetch ca.drivers di "
+            + "join fetch ca.photos ph";
 
     public CarRepository(SessionFactory sf) {
         this.sf = sf;
@@ -40,31 +36,30 @@ public class CarRepository implements ICrud<Car> {
 
     @Override
     public boolean created(Car car) {
-        AtomicBoolean rsl = new AtomicBoolean(false);
+        boolean result = false;
         try {
             tx(session -> session.save(car), sf);
-            rsl.set(true);
+            result = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return rsl.get();
+        return result;
     }
 
     @Override
     public boolean update(int id, Car car) {
-        AtomicBoolean result = new AtomicBoolean(false);
+        boolean result = false;
         try {
-            this.tx(session -> {
+            result = this.tx(session -> {
                         car.setId(id);
                         session.update(car);
-                        result.set(true);
-                        return result.get();
+                        return true;
                     },
                     sf);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result.get();
+        return result;
     }
 
     @Override
