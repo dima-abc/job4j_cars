@@ -19,4 +19,13 @@
     <include file="scripts/cars.sql" relativeToChangelogFile="true"/>
     <include file="scripts/users.sql" relativeToChangelogFile="true"/>
     <include file="scripts/abs.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/bodies_in.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/categories_in.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/colors_in.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/engines_in.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/marks_in.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/models_in.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/transmissions_in.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/users_in.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/catalog/insert/years_in.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
