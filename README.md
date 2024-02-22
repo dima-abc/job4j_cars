@@ -1,5 +1,5 @@
-[![Java CI with Maven job4j_cars](https://github.com/Dima-Stepanov/job4j_cars/actions/workflows/maven.yml/badge.svg)](https://github.com/Dima-Stepanov/job4j_cars/actions/workflows/maven.yml)
-[![codecov](https://codecov.io/gh/Dima-Stepanov/job4j_cars/branch/master/graph/badge.svg?token=5PkSEUrrf8)](https://codecov.io/gh/Dima-Stepanov/job4j_cars)
+[![Java CI with Maven job4j_cars](https://github.com/dima-abc/job4j_cars/actions/workflows/maven.yml/badge.svg)](https://github.com/dima-abc/job4j_cars/actions/workflows/maven.yml)
+[![codecov](https://codecov.io/gh/dima-abc/job4j_cars/branch/master/graph/badge.svg?token=5PkSEUrrf8)](https://codecov.io/gh/dima-abc/job4j_cars)
 <h1>Проект job4j_cars</h1><br>
 <h2>Реализацие площадки машин.</h2><br>
 
@@ -104,6 +104,5 @@ models.sql, transmissions.sql, years.sql, drivers.sql, engines.sql, history_owne
 ### Контакты
 
 > email: [haoos@inbox.ru](mailto:haoos@inbox.ru) <br>
-> tl: [Dima_software](https://t.me/Dima_software) <br>
-> github.com: [Dima-Stepanov](https://github.com/Dima-Stepanov)
-
+> tl: [dima_abc](https://t.me/dima_abc) <br>
+> github.com: [dima-abc](https://github.com/dima-abc)
